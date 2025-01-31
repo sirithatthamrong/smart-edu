@@ -14,15 +14,15 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Rails app lives here
 WORKDIR /rails
 
-# M1 and daisy ui has some infinite loop issue on node 22
+# M1 and daisy ui has some infinite loop issue on node 22 so we use 21
 # https://github.com/saadeghi/daisyui/issues/3030
-
+# https://github.com/rails/tailwindcss-rails/issues/169#issuecomment-1714328545
 
 # Install base packages
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3
 RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash -
-RUN apt-get install -y nodejs
+RUN apt-get install -y --no-install-recommends nodejs
 RUN rm -rf /var/lib/apt/lists /var/cache/apt/archives
 # Set production environment
 ENV RAILS_ENV="production" \
