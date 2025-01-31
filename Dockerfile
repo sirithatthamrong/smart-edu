@@ -22,7 +22,7 @@ WORKDIR /rails
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3
 RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash -
-RUN apt-get install -y nodejs npm
+RUN apt-get install -y nodejs
 RUN rm -rf /var/lib/apt/lists /var/cache/apt/archives
 # Set production environment
 ENV RAILS_ENV="production" \
