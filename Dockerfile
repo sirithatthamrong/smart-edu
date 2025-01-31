@@ -14,9 +14,13 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Rails app lives here
 WORKDIR /rails
 
+# M1 and daisy ui has some infinite loop issue on node 22
+# https://github.com/saadeghi/daisyui/issues/3030
+RUN curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash -
+
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips nodejs npm sqlite3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Set production environment
@@ -40,9 +44,11 @@ RUN bundle install && \
     bundle exec bootsnap precompile --gemfile
 
 # Copy application code
+COPY package.json package-lock.json ./
+RUN npm install
+
 COPY . .
-RUN pwd
-RUN ls
+
 # Precompile bootsnap code for faster boot times
 RUN bundle exec bootsnap precompile app/ lib/
 
