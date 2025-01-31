@@ -16,13 +16,14 @@ WORKDIR /rails
 
 # M1 and daisy ui has some infinite loop issue on node 22
 # https://github.com/saadeghi/daisyui/issues/3030
-RUN curl -fsSL https://deb.nodesource.com/setup_21.x | sudo -E bash -
+
 
 # Install base packages
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y curl libjemalloc2 libvips nodejs npm sqlite3 && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips nodejs npm sqlite3
+RUN curl -fsSL https://deb.nodesource.com/setup_21.x | bash -
+RUN apt-get install nodejs npm
+RUN rm -rf /var/lib/apt/lists /var/cache/apt/archives
 # Set production environment
 ENV RAILS_ENV="production" \
     BUNDLE_DEPLOYMENT="1" \
