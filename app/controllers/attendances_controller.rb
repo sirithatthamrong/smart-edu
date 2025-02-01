@@ -30,16 +30,10 @@ class AttendancesController < ApplicationController
     p = params.permit(:student_id).merge(user_id: Current.user.id, timestamp: Time.zone.now)
 
     @attendance = Attendance.new(p)
-    if @attendance.save!
-      respond_to do |format|
-        format.html { redirect_to new_attendance_path } # For normal page loads
-        format.turbo_stream { redirect_to new_attendance_path }# For Turbo-powered live updates
-      end
-    else
-      respond_to do |format|
-        format.html { redirect_to new_attendance_path } # For normal page loads
-        format.turbo_stream { redirect_to new_attendance_path }# For Turbo-powered live updates
-      end
+    @attendance.save
+    respond_to do |format|
+      format.html { redirect_to new_attendance_path(request.parameters) } # For normal page loads
+      format.turbo_stream { redirect_to new_attendance_path(request.parameters) }# For Turbo-powered live updates
     end
   end
 

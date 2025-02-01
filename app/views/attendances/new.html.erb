@@ -1,53 +1,15 @@
 <% content_for :title, "New attendance" %>
 <% if notice.present? %>
-  <div class="alert alert-info w-fit mx-auto mb-4">
-    <%= notice %>
-  </div>
+<div class="alert alert-info w-fit mx-auto mb-4">
+  <%= notice %>
+</div>
 <% end %>
 <%= search_form_for @q, url: new_attendance_path, data: { controller: "submit", turbo_frame: "students" } do |f| %>
-  <div class="p-5 bg-neutral-400 flex justify-center">
-    <%= f.text_field :name_cont, placeholder: "Search by student name...", data: { action: "input->submit#submit" }, 
-    class: "input input-bordered w-full max-w-xs" %>
-  </div>
+<div class="p-5 bg-neutral-400 flex justify-center">
+  <%= f.text_field :name_cont, placeholder: "Search by student name...", data: { action: "input->submit#submit" }, 
+      class: "input input-bordered w-full max-w-xs" %>
+</div>
+<turbo_frame id="students">
+  <%= render "attendances/attendance_scan_table" %>
+</turbo_frame>
 <% end %>
-<turbo-frame id="students">
-  <div class="flex flex-row justify-around items-start mt-4">
-    <div class="bg-accent p-4 rounded-md w-fit">
-      <h1 class="text-xl">Students</h1>
-      <table class="table table-zebra p-20">
-        <thead>
-          <tr>
-            <th>Student Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @students.each do |student| %>
-            <tr class="hover">
-              <td><%= highlight(student.name, params.dig(:q, :name_cont)) %></td>
-              <td><%= button_to 'Check in', attendances_path(student_id: student.id), method: :post, class: "btn btn-primary btn-xs", data: {turbo_frame: "students" }%></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <div class="bg-yellow-200 p-4 rounded-md w-fit">
-      <h1 class="text-xl">Checked-in Students</h1>
-      <table class="table table-zebra p-20">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Time</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @attendances.each do |attendance| %>
-            <tr class="hover">
-              <td><%= attendance.student.name %></td>
-              <td><%= attendance.timestamp.strftime('%Y-%m-%d %H:%M') %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</turbo-frame>

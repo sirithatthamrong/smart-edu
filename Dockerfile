@@ -14,7 +14,7 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 # Rails app lives here
 WORKDIR /rails
 
-# M1 and daisy ui has some infinite loop issue on node 22 so we use 21
+# Apple Sillicon and buildx with node daisy ui has some stalling issue
 # https://github.com/saadeghi/daisyui/issues/3030
 # https://github.com/rails/tailwindcss-rails/issues/169#issuecomment-1714328545
 # https://github.com/docker/for-mac/issues/6998
@@ -22,7 +22,7 @@ WORKDIR /rails
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
-RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
 RUN apt-get install -y --no-install-recommends nodejs && \ 
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 # Set production environment
