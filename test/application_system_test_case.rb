@@ -1,7 +1,7 @@
 require "test_helper"
 
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium, using: ci? ? :chrome_headless : :chrome, screen_size: [ 1400, 1400 ]
+  driven_by :selenium, using: ci? ? :headless_chrome : :chrome, screen_size: [ 1400, 1400 ]
   def login
     visit new_session_url
     @user = users(:one)
