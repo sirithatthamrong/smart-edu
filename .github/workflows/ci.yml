@@ -55,7 +55,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
+    env:
+      CI: true
     # services:
     #  redis:
     #    image: redis

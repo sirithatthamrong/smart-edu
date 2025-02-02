@@ -28,9 +28,8 @@ class AttendancesController < ApplicationController
   # POST /attendances or /attendances.json
   def create
     p = params.permit(:student_id).merge(user_id: Current.user.id, timestamp: Time.zone.now)
-
     @attendance = Attendance.new(p)
-    @attendance.save
+    @attendance.save!
     respond_to do |format|
       format.html { redirect_to new_attendance_path(request.parameters) } # For normal page loads
       format.turbo_stream { redirect_to new_attendance_path(request.parameters) }# For Turbo-powered live updates
@@ -58,9 +57,6 @@ class AttendancesController < ApplicationController
       format.html { redirect_to attendances_path, status: :see_other, notice: "Attendance was successfully destroyed." }
       format.json { head :no_content }
     end
-  end
-
-  def scan
   end
 
   private

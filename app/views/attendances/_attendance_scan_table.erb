@@ -10,7 +10,7 @@
       </thead>
       <tbody>
         <% @students.each do |student| %>
-          <tr class="hover">
+          <tr class="hover" data-content="<%= student.name %>">
             <td><%= highlight(student.name, params.dig(:q, :name_cont)) %></td>
             <td><%= submit_tag "Check-in", name: "check_in", 
               formaction: attendances_path(student_id: student.id),
@@ -24,7 +24,7 @@
   </div>
   <div class="bg-yellow-200 p-4 rounded-md w-fit">
     <h1 class="text-xl">Checked-in Students</h1>
-    <table class="table table-zebra p-20">
+    <table id="latest-attendances" class="table table-zebra p-20">
       <thead>
         <tr>
           <th>Name</th>

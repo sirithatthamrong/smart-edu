@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
-  resources :attendances do
-    collection do
-      get "scan" => "attendances#scan"
-      post "scan_create" => "attendances#scan_create"
-    end
-  end
+  resources :attendances
   resources :students
   get "home/index"
   resource :session

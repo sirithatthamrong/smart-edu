@@ -3,6 +3,9 @@ require_relative "../config/environment"
 require "rails/test_help"
 require "./test/helpers/authentication_helper"
 
+def ci?
+  ENV["CI"] == "true"
+end
 module SignInHelper
   def sign_in
     user = users(:one)

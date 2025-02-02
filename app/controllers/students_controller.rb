@@ -62,7 +62,7 @@ class StudentsController < ApplicationController
     @student.discard!
 
     respond_to do |format|
-      format.html { redirect_to students_path, status: :see_other, notice: "Student: #{@student.name} was successfully removed." }
+      format.html { redirect_to students_path, status: :see_other, notice: "#{@student.name} was successfully removed." }
       format.json { head :no_content }
     end
   end

@@ -2,44 +2,21 @@ require "application_system_test_case"
 
 class AttendancesTest < ApplicationSystemTestCase
   setup do
-    @attendance = attendances(:one)
+    @attendance = attendances(:attendance_1)
+    login
   end
 
   test "visiting the index" do
     visit attendances_url
-    assert_selector "h1", text: "Attendances"
+    assert_selector "h2 span", text: "Attendances"
   end
 
   test "should create attendance" do
-    visit attendances_url
-    click_on "New attendance"
-
-    fill_in "Student", with: @attendance.student_id
-    fill_in "Timestamp", with: @attendance.timestamp
-    fill_in "User", with: @attendance.user_id
-    click_on "Create Attendance"
-
-    assert_text "Attendance was successfully created"
-    click_on "Back"
-  end
-
-  test "should update Attendance" do
-    visit attendance_url(@attendance)
-    click_on "Edit this attendance", match: :first
-
-    fill_in "Student", with: @attendance.student_id
-    fill_in "Timestamp", with: @attendance.timestamp
-    fill_in "User", with: @attendance.user_id
-    click_on "Update Attendance"
-
-    assert_text "Attendance was successfully updated"
-    click_on "Back"
-  end
-
-  test "should destroy Attendance" do
-    visit attendance_url(@attendance)
-    click_on "Destroy this attendance", match: :first
-
-    assert_text "Attendance was successfully destroyed"
+    visit new_attendance_url
+    within 'tr[data-content="Student 6"]' do
+      click_on "Check-in"
+    end
+    first_row = "table#latest-attendances tbody tr:first-of-type td:first-of-type"
+    assert_selector first_row, text: "Student 6"
   end
 end
