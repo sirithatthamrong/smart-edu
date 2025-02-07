@@ -7,6 +7,7 @@
 #  id              :integer          not null, primary key
 #  email_address   :string           not null
 #  password_digest :string           not null
+#  is_active       :boolean          default(TRUE)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
