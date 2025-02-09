@@ -1,0 +1,5 @@
+const userElement = document.getElementById("user-<%= @user.id %>");
+if (userElement) {
+    userElement.remove();
+}
+alert("<%= @user.email_address %> has been approved.");
