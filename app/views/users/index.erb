@@ -1,0 +1,13 @@
+<h1>Pending Users</h1>
+<% if @pending_users.any? %>
+  <ul>
+    <% @pending_users.each do |user| %>
+      <li>
+        <%= user.email_address %> - <%= user.role.capitalize %>
+        <%= link_to "Approve", approve_user_path(user), method: :patch, data: { confirm: "Approve this user?" } %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No pending approvals.</p>
+<% end %>
