@@ -6,10 +6,21 @@ class UsersController < ApplicationController
   end
 
   def approve
-    user = User.find(params[:id])
-    user.update(approved: true)
-    flash[:notice] = "#{user.email_address} has been approved."
-    redirect_to users_path
+    @user = User.find(params[:id])
+
+    if @user.update(approved: true)
+      respond_to do |format|
+        format.html { redirect_to users_path, notice: "#{@user.email_address} has been approved." }
+        format.js
+      end
+    else
+      Rails.logger.error "ERROR: Failed to approve user: #{@user.errors.full_messages.join(', ')}"
+
+      respond_to do |format|
+        format.html { redirect_to users_path, alert: "Failed to approve user." }
+        format.js { render js: "alert('Failed to approve user: #{@user.errors.full_messages.join(', ')}')" }
+      end
+    end
   end
 
   private

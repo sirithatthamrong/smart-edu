@@ -21,7 +21,7 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :password, presence: true, length: { minimum: 8, maximum: 20 }
+  validates :password, presence: true, length: { minimum: 8, maximum: 20 }, if: :password_required?
 
   ROLES = { admin: "admin", principal: "principal", teacher: "teacher" }.freeze
   validates :role, inclusion: { in: ROLES.values }
@@ -48,5 +48,11 @@ class User < ApplicationRecord
 
   def teacher?
     role == "teacher"
+  end
+
+  private
+
+  def password_required?
+    new_record? || password.present?
   end
 end

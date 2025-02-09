@@ -5,13 +5,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # def start_new_session_for(user)
-  #   user.sessions.create!(user_agent: request.user_agent, ip_address: request.remote_ip).tap do |session|
-  #     Current.session = session
-  #     cookies.signed.permanent[:session_id] = { value: session.id, httponly: true, same_site: :lax }
-  #   end
-  # end
-
   def set_current_user
     if Current.session
       @current_user = Current.session.user

@@ -1,10 +1,11 @@
 <h1>Pending Users</h1>
+
 <% if @pending_users.any? %>
-  <ul>
+  <ul id="pending-users-list">
     <% @pending_users.each do |user| %>
-      <li>
+      <li id="user-<%= user.id %>">
         <%= user.email_address %> - <%= user.role.capitalize %>
-        <%= link_to "Approve", approve_user_path(user), method: :patch, data: { confirm: "Approve this user?" } %>
+        <%= button_to "Approve", approve_user_path(user), method: :patch, remote: true, data: { turbo: true, confirm: "Approve this user?" } %>
       </li>
     <% end %>
   </ul>
