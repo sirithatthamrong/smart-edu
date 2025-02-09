@@ -31,10 +31,22 @@ class User < ApplicationRecord
   before_create :auto_approve_principal
 
   def auto_approve_principal
-    self.approved = true if role == "principal" || role == "admin"
+    self.approved = true if principal? || admin?
   end
 
   def can_manage_teachers?
-    role == "principal" || role == "admin"
+    admin? || principal?
+  end
+
+  def admin?
+    role == "admin"
+  end
+
+  def principal?
+    role == "principal"
+  end
+
+  def teacher?
+    role == "teacher"
   end
 end
