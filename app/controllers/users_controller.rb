@@ -3,6 +3,10 @@ class UsersController < ApplicationController
 
   def index
     @pending_users = User.where(approved: false)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def approve
@@ -15,7 +19,6 @@ class UsersController < ApplicationController
       end
     else
       Rails.logger.error "ERROR: Failed to approve user: #{@user.errors.full_messages.join(', ')}"
-
       respond_to do |format|
         format.html { redirect_to users_path, alert: "Failed to approve user." }
         format.js { render js: "alert('Failed to approve user: #{@user.errors.full_messages.join(', ')}')" }

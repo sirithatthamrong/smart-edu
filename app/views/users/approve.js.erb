@@ -10,7 +10,6 @@ function showSuccessToast(message) {
     const toast = document.createElement("div");
     toast.className = "fixed bottom-5 right-5 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg text-sm font-semibold flex items-center gap-2 animate-fade";
     toast.innerHTML = `<span class="text-lg">✅</span> ${message}`;
-
     document.body.appendChild(toast);
 
     setTimeout(() => {
@@ -19,14 +18,14 @@ function showSuccessToast(message) {
     }, 1500);
 }
 
-// Refresh only the pending users list instead of the entire page
-fetch(window.location.href, {headers: {"X-Requested-With": "XMLHttpRequest"}})
+// Refresh the table content
+fetch("<%= users_path(format: :js) %>", { headers: { "X-Requested-With": "XMLHttpRequest" } })
     .then(response => response.text())
     .then(html => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, "text/html");
-        const newList = doc.getElementById("pending-users-list");
-        if (newList) {
-            document.getElementById("pending-users-list").innerHTML = newList.innerHTML;
+        const updatedTable = doc.querySelector("#pending-users-list");
+        if (updatedTable) {
+            document.getElementById("pending-users-list").innerHTML = updatedTable.innerHTML;
         }
     });
