@@ -25,7 +25,7 @@ classes:{},
 builder:"-source-",
 /**
 	 * Error reporting.
-	 * 
+	 *
 	 * How should DataTables report an error. Can take the value 'alert',
 	 * 'throw', 'none' or a function.
 	 *
@@ -35,7 +35,7 @@ builder:"-source-",
 errMode:"alert",feature:[],features:{},
 /**
 	 * Row searching.
-	 * 
+	 *
 	 * This method of searching is complimentary to the default type based
 	 * searching, and a lot more comprehensive as it allows you complete control
 	 * over the searching logic. Each element in this array is a function
@@ -134,7 +134,7 @@ legacy:{
 ajax:null},
 /**
 	 * Pagination plug-in methods.
-	 * 
+	 *
 	 * Each entry in this object is a function and defines which buttons should
 	 * be shown by the pagination rendering method that is used for the table:
 	 * {@link DataTable.ext.renderer.pageButton}. The renderer addresses how the
@@ -180,16 +180,16 @@ ajax:null},
 pager:{},renderer:{pageButton:{},header:{}},
 /**
 	 * Ordering plug-ins - custom data source
-	 * 
+	 *
 	 * The extension options for ordering of data available here is complimentary
 	 * to the default type based ordering that DataTables typically uses. It
 	 * allows much greater control over the the data that is being used to
 	 * order a column, but is necessarily therefore more complex.
-	 * 
+	 *
 	 * This type of ordering is useful if you want to do ordering based on data
 	 * live from the DOM (for example the contents of an 'input' element) rather
 	 * than just the static string that DataTables knows of.
-	 * 
+	 *
 	 * The way these plug-ins work is that you create an array of the values you
 	 * wish to be ordering for the column in question and then return that
 	 * array. The data in the array much be in the index order of the rows in
@@ -269,7 +269,7 @@ detect:[],render:{},
 		 *
 		 * Note that is a search is not defined for a column of a given type,
 		 * no search formatting will be performed.
-		 * 
+		 *
 		 * Pre-processing of searching data plug-ins - When you assign the sType
 		 * for a column (or have it automatically detected for you by DataTables
 		 * or a type detection plug-in), you will typically be using this for
@@ -337,7 +337,7 @@ search:{},
 		 *   than the second parameter, ===0 if the two parameters are equal and
 		 *   >0 if the first parameter should be sorted height than the second
 		 *   parameter.
-		 * 
+		 *
 		 *  @type object
 		 *  @default {}
 		 *
@@ -686,7 +686,7 @@ get:function(e){if(t.isPlainObject(e)){var r={};t.each(e,(function(e,t){t&&(r[e]
  */function _fnGetRowElements(e,t,r,n){var i,o,l,s=[],u=t.firstChild,f=0,c=e.aoColumns,d=e._rowReadObject;n=n!==void 0?n:d?{}:[];var attr=function(e,t){if(typeof e==="string"){var r=e.indexOf("@");if(r!==-1){var i=e.substring(r+1);var o=m(e);o(n,t.getAttribute(i))}}};var cellProcess=function(e){if(r===void 0||r===f){o=c[f];l=e.innerHTML.trim();if(o&&o._bAttrSrc){var t=m(o.mData._);t(n,l);attr(o.mData.sort,e);attr(o.mData.type,e);attr(o.mData.filter,e)}else if(d){o._setter||(o._setter=m(o.mData));o._setter(n,l)}else n[f]=l}f++};if(u)while(u){i=u.nodeName.toUpperCase();if(i=="TD"||i=="TH"){cellProcess(u);s.push(u)}u=u.nextSibling}else{s=t.anCells;for(var p=0,v=s.length;p<v;p++)cellProcess(s[p])}var h=t.firstChild?t:t.nTr;if(h){var g=h.getAttribute("id");g&&m(e.rowId)(n,g)}return{data:n,cells:s}}
 /**
  * Render and cache a row's display data for the columns, if required
- * @returns 
+ * @returns
  */function _fnGetRowDisplay(e,t){var r=e.aoData[t];var n=e.aoColumns;if(!r.displayData){r.displayData=[];for(var i=0,o=n.length;i<o;i++)r.displayData.push(_fnGetCellData(e,t,i,"display"))}return r.displayData}
 /**
  * Create a new TR element (and it's TD children) for a row
@@ -835,7 +835,7 @@ get:function(e){if(t.isPlainObject(e)){var r={};t.each(e,(function(e,t){t&&(r[e]
  */function _fnFilterComplete(e,r){var n=e.aoPreSearchCols;if(_fnDataSource(e)!="ssp"){_fnFilterData(e);e.aiDisplay=e.aiDisplayMaster.slice();_fnFilter(e.aiDisplay,e,r.search,r);t.each(e.searchFixed,(function(t,r){_fnFilter(e.aiDisplay,e,r,{})}));for(var i=0;i<n.length;i++){var o=n[i];_fnFilter(e.aiDisplay,e,o.search,o,i);t.each(e.aoColumns[i].searchFixed,(function(t,r){_fnFilter(e.aiDisplay,e,r,{},i)}))}_fnFilterCustom(e)}e.bFiltered=true;_fnCallbackFire(e,null,"search",[e])}
 /**
  * Apply custom filtering functions
- * 
+ *
  * This is legacy now that we have named functions, but it is widely used
  * from 1.x, so it is not yet deprecated.
  *  @param {object} oSettings dataTables settings object
@@ -1065,7 +1065,7 @@ get:function(e){if(t.isPlainObject(e)){var r={};t.each(e,(function(e,t){t&&(r[e]
  *
  * @param {*} arr Array to add the data to
  * @param {*} data Data array that is to be added
- * @returns 
+ * @returns
  */function _fnArrayApply(e,t){if(t)if(t.length<1e4)e.push.apply(e,t);else for(M=0;M<t.length;M++)e.push(t[M])}
 /**
  * Computed structure of the DataTables API, defined by the options passed to
@@ -1392,7 +1392,7 @@ bLengthChange:true,bPaginate:true,bProcessing:false,bRetrieve:false,bScrollColla
 /**
 		 * Assign a `placeholder` attribute to the search `input` element
 		 *  @type string
-		 *  @default 
+		 *  @default
 		 *
 		 *  @dtopt Language
 		 *  @name DataTable.defaults.language.searchPlaceholder
@@ -1453,4 +1453,3 @@ bSorted:false,bSortCellsTop:null,oInit:null,aoDestroyCallback:[],fnRecordsTotal:
  * @param {boolean} addFirstLast Indicate if page 1 and end should be included
  * @returns Buttons to show
  */function _pagingNumbers(e,t,r,n){var i=[],o=Math.floor(r/2),l=n?2:1,s=n?1:0;if(t<=r)i=_range(0,t);else if(r===1)i=[e];else if(r===3)if(e<=1)i=[0,1,"ellipsis"];else if(e>=t-2){i=_range(t-2,t);i.unshift("ellipsis")}else i=["ellipsis",e,"ellipsis"];else if(e<=o){i=_range(0,r-l);i.push("ellipsis");n&&i.push(t-1)}else if(e>=t-1-o){i=_range(t-(r-l),t);i.unshift("ellipsis");n&&i.unshift(0)}else{i=_range(e-o+l,e+o-s);i.push("ellipsis");i.unshift("ellipsis");if(n){i.push(t-1);i.unshift(0)}}return i}var W=0;DataTable.feature.register("pageLength",(function(e,r){var n=e.oFeatures;if(!n.bPaginate||!n.bLengthChange)return null;r=t.extend({menu:e.aLengthMenu,text:e.oLanguage.sLengthMenu},r);var i,o=e.oClasses.length,l=e.sTableId,s=r.menu,u=[],f=[];if(Array.isArray(s[0])){u=s[0];f=s[1]}else for(i=0;i<s.length;i++)if(t.isPlainObject(s[i])){u.push(s[i].value);f.push(s[i].label)}else{u.push(s[i]);f.push(s[i])}var c=r.text.match(/_MENU_$/);var d=r.text.match(/^_MENU_/);var p=r.text.replace(/_MENU_/,"");var v="<label>"+r.text+"</label>";d?v="_MENU_<label>"+p+"</label>":c&&(v="<label>"+p+"</label>_MENU_");var h="tmp-"+ +new Date;var g=t("<div/>").addClass(o.container).append(v.replace("_MENU_",'<span id="'+h+'"></span>'));var m=[];Array.prototype.slice.call(g.find("label")[0].childNodes).forEach((function(e){e.nodeType===Node.TEXT_NODE&&m.push({el:e,text:e.textContent})}));var updateEntries=function(t){m.forEach((function(r){r.el.textContent=_fnMacros(e,r.text,t)}))};var _=t("<select/>",{"aria-controls":l,class:o.select});for(i=0;i<u.length;i++)_[0][i]=new Option(typeof f[i]==="number"?e.fnFormatNumber(f[i]):f[i],u[i]);g.find("label").attr("for","dt-length-"+W);_.attr("id","dt-length-"+W);W++;g.find("#"+h).replaceWith(_);t("select",g).val(e._iDisplayLength).on("change.DT",(function(){_fnLengthChange(e,t(this).val());_fnDraw(e)}));t(e.nTable).on("length.dt.DT",(function(r,n,i){if(e===n){t("select",g).val(i);updateEntries(i)}}));updateEntries(e._iDisplayLength);return g}),"l");t.fn.dataTable=DataTable;DataTable.$=t;t.fn.dataTableSettings=DataTable.settings;t.fn.dataTableExt=DataTable.ext;t.fn.DataTable=function(e){return t(this).dataTable(e).api()};t.each(DataTable,(function(e,r){t.fn.DataTable[e]=r}));export{DataTable as default};
-

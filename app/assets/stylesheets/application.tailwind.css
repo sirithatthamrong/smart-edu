@@ -56,3 +56,22 @@
 #students-table tr:hover {
   background-color: #f1f5f9;
 }
+
+
+#List-Attendance {
+  border-collapse: collapse;
+}
+
+#List-Attendance thead th {
+  background: #1f2937;
+  color: white;
+  text-align: left;
+}
+
+#List-Attendance tr {
+  transition: background-color 0.2s ease;
+}
+
+#List-Attendance tr:hover {
+  background-color: #f1f5f9;
+}
