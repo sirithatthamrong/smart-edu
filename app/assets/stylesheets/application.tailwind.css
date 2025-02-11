@@ -32,3 +32,27 @@
     }
   }
 }
+
+
+#students-table tbody tr:hover {
+  background-color: #F9FAFB; /* Light hover */
+}
+
+/* Custom Table CSS */
+#students-table {
+  border-collapse: collapse;
+}
+
+#students-table thead th {
+  background: #1f2937;
+  color: white;
+  text-align: left;
+}
+
+#students-table tr {
+  transition: background-color 0.2s ease;
+}
+
+#students-table tr:hover {
+  background-color: #f1f5f9;
+}
