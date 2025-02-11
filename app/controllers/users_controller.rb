@@ -26,6 +26,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def cancel
+    @user = User.find(params[:id])
+
+    if @user.destroy
+      respond_to do |format|
+        format.html { redirect_to users_path, notice: "#{@user.email_address} has been removed." }
+        format.js
+      end
+    else
+      Rails.logger.error "ERROR: Failed to remove user: #{@user.errors.full_messages.join(', ')}"
+      respond_to do |format|
+        format.html { redirect_to users_path, alert: "Failed to remove user." }
+        format.js { render js: "alert('Failed to remove user: #{@user.errors.full_messages.join(', ')}')" }
+      end
+    end
+  end
+
   private
 
   def authenticate_admin!

@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :users, only: %i[index] do
     member do
       patch :approve
+      delete :cancel
     end
   end
   get "up" => "rails/health#show", as: :rails_health_check
