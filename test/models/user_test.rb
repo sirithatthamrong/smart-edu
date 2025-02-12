@@ -3,8 +3,11 @@
 # Table name: users
 #
 #  id              :integer          not null, primary key
+#  approved        :boolean          default(FALSE)
 #  email_address   :string           not null
+#  is_active       :boolean          default(TRUE)
 #  password_digest :string           not null
+#  role            :string           default("teacher")
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

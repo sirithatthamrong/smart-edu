@@ -5,8 +5,11 @@
 # Table name: users
 #
 #  id              :integer          not null, primary key
+#  approved        :boolean          default(FALSE)
 #  email_address   :string           not null
+#  is_active       :boolean          default(TRUE)
 #  password_digest :string           not null
+#  role            :string           default("teacher")
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
@@ -15,8 +18,9 @@
 #  index_users_on_email_address  (email_address) UNIQUE
 #
 one:
-  email_address: one@example.com
+  email_address: admin@example.com
   password_digest: <%= password_digest %>
+  approved: true
 
 two:
   email_address: two@example.com
