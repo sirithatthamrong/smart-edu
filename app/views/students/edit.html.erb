@@ -1,19 +1,16 @@
-<% content_for :stylesheets do %>
-  <%= stylesheet_link_tag "pages/students" %>
-<% end %>
-
 <% content_for :title, "Editing student" %>
 
 <div class="student-card max-w-md mx-auto mt-10">
+  <div class="mt-2">
+    <%= link_to students_path, class: "btn" do %>
+      <i class="fas fa-arrow-left"></i> Back
+    <% end %>
+  </div>
   <h1 class="student-title">Editing Student</h1>
 
   <%= render "form", student: @student %>
 
-  <div class="mt-4 flex justify-center space-x-4">
-    <%= link_to "Show this student", @student, class: "btn student-btn-show" %>
-
-    <%= link_to students_path, class: "btn btn-secondary" do %>
-      <i class="fas fa-arrow-left"></i> Back to students
-    <% end %>
-  </div>
+<!--  <div class="mt-4 flex justify-center space-x-4">-->
+    <%#= link_to "Show", @student, class: "btn student-btn-show" %>
+<!--  </div>-->
 </div>
