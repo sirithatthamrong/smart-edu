@@ -1,0 +1,19 @@
+/* app/assets/stylesheets/pages/students.css */
+@layer components {
+    .student-card {
+        @apply bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300;
+    }
+
+    .student-title {
+        @apply text-2xl font-bold text-center text-blue-600 mb-4;
+    }
+
+    .student-btn-show {
+        @apply text-white bg-gray-500 hover:bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium ;
+    }
+
+    .student-btn-secondary {
+        @apply bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition;
+    }
+
+}
