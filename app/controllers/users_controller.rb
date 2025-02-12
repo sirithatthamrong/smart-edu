@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     end
   end
 
+  #
   def approve
     @user = User.find(params[:id])
 
