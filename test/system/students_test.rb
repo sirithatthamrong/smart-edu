@@ -30,7 +30,7 @@ class StudentsTest < ApplicationSystemTestCase
 
   test "should update Student" do
     visit student_url(@student)
-    click_on "Edit this student", match: :first
+    click_on "Edit", match: :first
 
     click_on "Update Student"
 
@@ -38,10 +38,10 @@ class StudentsTest < ApplicationSystemTestCase
     click_on "Back"
   end
 
-  test "should destroy Student" do
+  test "should delete Student" do
     visit student_url(@student)
     accept_alert do
-      click_on "Destroy this student", match: :first
+      click_on "Delete", match: :first
     end
     assert_text "Student 1 was successfully removed."
   end
