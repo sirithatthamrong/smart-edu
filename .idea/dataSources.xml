@@ -9,6 +9,7 @@
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="Smart-edu: development" uuid="64ad0a2b-1642-4460-96ac-d76c43a4a8d0">
+    <data-source source="LOCAL" name="development" uuid="21e2f34d-6b1a-4fed-8406-6c383f46d58d">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
