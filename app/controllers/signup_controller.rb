@@ -24,6 +24,8 @@ class SignupController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email_address, :password, :password_confirmation, :role)
+    permitted = params.require(:user).permit(:email_address, :password, :password_confirmation, :role)
+    permitted[:role] = "student" unless User::ROLES.values.include?(permitted[:role])
+    permitted
   end
 end
