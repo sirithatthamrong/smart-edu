@@ -16,7 +16,14 @@
     <%= form.email_field :email_address, class: "input input-bordered w-full mt-2", placeholder: "Email", autocomplete: "username" %>
     <%= form.password_field :password, class: "input input-bordered w-full mt-2", placeholder: "Password", autocomplete: "new-password" %>
     <%= form.password_field :password_confirmation, class: "input input-bordered w-full mt-2", placeholder: "Confirm Password", autocomplete: "new-password" %>
-    <%= form.select :role, [%w[Teacher teacher], %w[Student student]], {}, class: "input input-bordered w-full mt-2" %>
+    <div class="mt-4">
+      <div class="flex items-center mt-2">
+        <%= form.radio_button :role, "teacher", class: "radio radio-primary" %>
+        <div class="ml-2 px-2">Teacher</div>
+        <%= form.radio_button :role, "student", class: "radio radio-primary" %>
+        <div class="ml-2 px-2">Student</div>
+      </div>
+    </div>
     <%= form.submit "Sign Up", class: "btn btn-primary w-full mt-4" %>
   <% end %>
   <div class="text-center py-4">
