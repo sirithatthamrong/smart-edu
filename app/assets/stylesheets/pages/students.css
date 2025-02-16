@@ -16,6 +16,10 @@
         @apply bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition;
     }
 
+    .student-submit {
+        @apply bg-blue-500 text-white btn w-full mt-2 hover:bg-blue-600 transition;
+    }
+
 }
 
 
