@@ -41,7 +41,6 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
 
 
   test "archive student after deletion" do
-
     delete student_url(@student)
     @student.reload
 
@@ -54,5 +53,4 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
     # Assert the flash message is correct
     assert_equal "#{@student.name} was archived successfully.", flash[:notice]
   end
-
 end

@@ -24,6 +24,4 @@ Rails.application.routes.draw do
       get :manage  # This will map to students#manage
     end
   end
-
-
 end

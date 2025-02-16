@@ -108,8 +108,4 @@ class StudentsController < ApplicationController
   def manage
     @pagy, @students = pagy(Student.all) # Show both active and archived students
   end
-
-
-
-
 end
