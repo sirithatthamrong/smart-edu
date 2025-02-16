@@ -121,7 +121,16 @@ jobs:
           docker build -t kanladaporn/smartedu:latest .
           docker push kanladaporn/smartedu:latest
 
+      - name: Install Kamal
+        run: |
+          gem install --user-install kamal
+          echo "$(ruby -e 'puts Gem.user_dir')/bin" >> $GITHUB_PATH
+
+      - name: Verify Kamal Installation
+        run: |
+          which kamal
+          kamal version
+
       - name: Deploy with Kamal
         run: |
-          gem install kamal
           kamal deploy
