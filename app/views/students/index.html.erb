@@ -1,31 +1,33 @@
-
 <%= render "shared/notice" %>
+
 <% content_for :title, "Students" %>
+
 <div class="flex justify-end px-2">
   <%= link_to "New student", new_student_path, class: "btn btn-primary" %>
 </div>
 
-
-<!--Currently removing the pagy nav bars in top, since its already built in with data table-->
-<!--But can change later for sure-->
-
-<!--<div class="flex justify-center items-center">-->
-  <%#== pagy_nav(@pagy) %>
-<!--</div>-->
+<!-- Currently removing the pagy nav bars in top, since it's already built in with data table -->
+<!-- But can change later for sure -->
+<!-- <div class="flex justify-center items-center"> -->
+<%#== pagy_nav(@pagy) %>
+<!-- </div> -->
 
 <div class="overflow-x-auto m-2">
-<!--  <table id="students-table" class="table table-zebra" data-turbo="false">-->
   <table id="students-table" class="w-full text-left border-separate border-spacing-0 bg-white shadow-md rounded-2xl overflow-hidden hover" data-turbo="false">
 
-  <thead>
+    <thead>
     <tr>
       <th></th>
       <th>ID</th>
       <th>Name</th>
       <th>UID</th>
+      <th>Status</th>
+      <th>Grade</th>
+      <th>Section</th>
       <th>Actions</th>
     </tr>
     </thead>
+
     <tbody>
     <% @students.each do |student| %>
       <tr>
@@ -33,6 +35,17 @@
         <td><%= student.id %></td>
         <td><%= student.name %></td>
         <td><%= student.uid %></td>
+        <td>
+          <% if student.is_active? %>
+            <span class="text-green-600 font-bold">Active</span>
+          <% else %>
+            <span class="text-red-600 font-bold">Archived</span>
+          <% end %>
+        </td>
+        <td><%= student.grade %></td> <!-- Display grade -->
+        <td><%= student.section %></td> <!-- Display section -->
+
+
         <td>
           <div class="flex space-x-2">
             <%= link_to student, class: "hover:text-blue-500 text-blue-700" do %>
@@ -46,13 +59,14 @@
       </tr>
     <% end %>
     </tbody>
+
   </table>
 </div>
 
-<!--Currently removing the pagy nav bars in top, since its already built in with data table-->
-<!--<div class="flex justify-center items-center">-->
-  <%#== pagy_nav(@pagy) %>
-<!--</div>-->
+<!-- Currently removing the pagy nav bars in top, since it's already built in with data table -->
+<!-- <div class="flex justify-center items-center"> -->
+<%#== pagy_nav(@pagy) %>
+<!-- </div> -->
 
 <script>
     document.addEventListener("turbo:load", function () {
@@ -66,9 +80,7 @@
                     search: "",
                     searchPlaceholder: "Search students...",
                 },
-
             });
         }
     });
-
 </script>

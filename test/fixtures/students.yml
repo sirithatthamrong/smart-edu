@@ -10,7 +10,10 @@
 #
 #  id           :integer          not null, primary key
 #  discarded_at :datetime
+#  grade        :string
+#  is_active    :boolean          default(TRUE), not null
 #  name         :string
+#  section      :string
 #  uid          :string           not null
 #
 # Indexes

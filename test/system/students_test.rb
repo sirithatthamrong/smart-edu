@@ -23,26 +23,34 @@ class StudentsTest < ApplicationSystemTestCase
   test "should create student" do
     visit students_url
     click_on "New student"
-    fill_in "Name", with: @student.name
+    fill_in "Name", with: "Harry"
+    fill_in "Section", with: "3"
+    fill_in "Grade", with: "B"
     click_on "Create Student"
     assert_text "Student was successfully created"
+    assert_text "Harry" # Ensure the new student's name is displayed
   end
 
-  test "should update Student" do
+  test "should update student" do
     visit student_url(@student)
     click_on "Edit", match: :first
-
+    fill_in "Name", with: "Harry"
+    fill_in "Section", with: "5"
+    fill_in "Grade", with: "B"
     click_on "Update Student"
 
     assert_text "Student was successfully updated"
+    assert_text "Harry" # Ensure the updated name is displayed
     click_on "Back"
   end
 
-  test "should delete Student" do
+  test "should archive student (destroy)" do
     visit student_url(@student)
     accept_alert do
       click_on "Delete", match: :first
     end
-    assert_text "Student 1 was successfully removed."
+    @student.reload
+    assert_equal true, @student.is_active
+    assert_text "#{@student.name} was archived successfully."
   end
 end

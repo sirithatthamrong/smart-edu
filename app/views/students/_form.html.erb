@@ -13,7 +13,19 @@
     <%= form.label :name, class: 'label' %>
     <%= form.text_field :name, class: 'input input-bordered w-full' %>
   </div>
+
+  <div class="mb-4">
+    <%= form.label :section, class: 'label'  %>
+    <%= form.text_field :section, class: 'input input-bordered w-full', required: true %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :grade, class:'label' %>
+    <%= form.text_field :grade, class: 'input input-bordered w-full', required: true %>
+  </div>
+
   <div class="form-control mt-4">
     <%= form.submit class: 'btn btn-primary w-full' %>
   </div>
+
 <% end %>
