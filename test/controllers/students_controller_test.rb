@@ -55,7 +55,4 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
     assert_equal "#{@student.name} was archived successfully.", flash[:notice]
   end
 
-
-
-
 end
