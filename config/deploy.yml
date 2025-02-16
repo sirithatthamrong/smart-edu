@@ -2,7 +2,7 @@
 service: smartedu
 
 # Name of the container image.
-image: kanladaporn/smartedu:latest
+image: kanladaporn/smartedu
 
 # Deploy to these servers.
 servers:
