@@ -118,8 +118,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t kanladaporn/smartedu .
-          docker push kanladaporn/smartedu
+          docker build -t kanladaporn/smartedu:latest .
+          docker push kanladaporn/smartedu:latest
 
       - name: Deploy with Kamal
         run: |
