@@ -34,12 +34,9 @@ class StudentsTest < ApplicationSystemTestCase
   test "should update student" do
     visit student_url(@student)
     click_on "Edit", match: :first
-<<<<<<< Updated upstream
     fill_in "Name", with: "Harry"
     fill_in "Section", with: "5"
     fill_in "Grade", with: "B"
-=======
->>>>>>> Stashed changes
     click_on "Update Student"
     assert_text "Student was successfully updated"
     assert_text "Harry" # Ensure the updated name is displayed
