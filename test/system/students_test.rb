@@ -38,7 +38,6 @@ class StudentsTest < ApplicationSystemTestCase
     fill_in "Section", with: "5"
     fill_in "Grade", with: "B"
     click_on "Update Student"
-
     assert_text "Student was successfully updated"
     assert_text "Harry" # Ensure the updated name is displayed
     click_on "Back"
