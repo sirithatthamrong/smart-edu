@@ -4,8 +4,10 @@
 #
 #  id           :integer          not null, primary key
 #  discarded_at :datetime
+#  grade        :string
 #  is_active    :boolean          default(TRUE), not null
 #  name         :string
+#  section      :string
 #  uid          :string           not null
 #
 # Indexes
@@ -14,6 +16,8 @@
 #
 class Student < ApplicationRecord
   validates :name, presence: true, length: { minimum: 5, maximum: 20 }
+  validates :section, presence: true
+  validates :grade, presence: true
   include Discard::Model
   before_save :set_default_uid
 

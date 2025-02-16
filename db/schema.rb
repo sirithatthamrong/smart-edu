@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_16_045357) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_16_060259) do
   create_table "attendances", force: :cascade do |t|
     t.integer "student_id", null: false
     t.datetime "timestamp"
@@ -35,6 +35,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_16_045357) do
     t.string "uid", null: false
     t.datetime "discarded_at"
     t.boolean "is_active", default: true, null: false
+    t.string "section"
+    t.string "grade"
     t.index ["discarded_at"], name: "index_students_on_discarded_at"
   end
 
