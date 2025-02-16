@@ -96,7 +96,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [test, lint, scan_ruby, scan_js]
+    needs: [ test, lint, scan_ruby, scan_js ]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -110,11 +110,11 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
+      - name: Setup RAILS_MASTER_KEY
+        run: echo "${{ secrets.RAILS_MASTER_KEY }}" > config/master.key
+
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build and Push Docker Image
         run: |
@@ -125,6 +125,7 @@ jobs:
         run: |
           gem install --user-install kamal
           echo "$(ruby -e 'puts Gem.user_dir')/bin" >> $GITHUB_PATH
+          export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
 
       - name: Verify Kamal Installation
         run: |
@@ -132,5 +133,4 @@ jobs:
           kamal version
 
       - name: Deploy with Kamal
-        run: |
-          kamal deploy
+        run: kamal deploy
