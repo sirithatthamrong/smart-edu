@@ -6,7 +6,7 @@ class StudentsController < ApplicationController
   include Pagy::Backend
   # GET /students or /students.json
   def index
-    @pagy, @students = pagy(Student.kept)
+    @pagy, @students = pagy(Student.where(is_active: true))
   end
 
   # GET /students/1 or /students/1.json
@@ -59,10 +59,17 @@ class StudentsController < ApplicationController
 
   # DELETE /students/1 or /students/1.json
   def destroy
-    @student.discard!
+    # @student.discard!
+    #
+    # respond_to do |format|
+    #   format.html { redirect_to students_path, status: :see_other, notice: "#{@student.name} was successfully removed." }
+    #   format.json { head :no_content }
+    # end
+
+    @student.update(is_active: false) # Archive the student instead of deleting
 
     respond_to do |format|
-      format.html { redirect_to students_path, status: :see_other, notice: "#{@student.name} was successfully removed." }
+      format.html { redirect_to students_path, notice: "#{@student.name} was archived successfully." }
       format.json { head :no_content }
     end
   end
@@ -71,12 +78,38 @@ class StudentsController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_student
-      @student = Student.find(params.expect(:id))
+      # @student = Student.find(params.expect(:id))
       @student = Student.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def student_params
-      params.require(:student).permit(:name)
+      params.require(:student).permit(:name, :is_active)
     end
+
+    def archive
+      @student = Student.find(params[:id])
+      if @student.update(is_active: false)
+        redirect_to students_path, notice: "#{@student.name} has been archived."
+      else
+        redirect_to students_path, alert: "Failed to archive student."
+      end
+    end
+
+  def activate
+    @student = Student.find(params[:id])
+    if @student.update(is_active: true)
+      redirect_to students_path, notice: "#{@student.name} has been reactivated."
+    else
+      redirect_to students_path, alert: "Failed to activate student."
+    end
+  end
+
+  def manage
+    @pagy, @students = pagy(Student.all) # Show both active and archived students
+  end
+
+
+
+
 end

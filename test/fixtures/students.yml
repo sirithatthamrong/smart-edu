@@ -10,6 +10,7 @@
 #
 #  id           :integer          not null, primary key
 #  discarded_at :datetime
+#  is_active    :boolean          default(TRUE), not null
 #  name         :string
 #  uid          :string           not null
 #
