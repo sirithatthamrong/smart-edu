@@ -5,6 +5,6 @@
     <p>UID: <%= student.uid %></p>
   </div>
   <figure class="p-5">
-    <%= raw RQRCode::QRCode.new(student.uid).as_svg %>
+      <%= generate_qr_code(@student.uid) %>
   </figure>
 </div>
