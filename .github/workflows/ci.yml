@@ -127,10 +127,12 @@ jobs:
           echo "$(ruby -e 'puts Gem.user_dir')/bin" >> $GITHUB_PATH
           export PATH="$(ruby -e 'puts Gem.user_dir')/bin:$PATH"
 
-      - name: Verify Kamal Installation
-        run: |
-          which kamal
-          kamal version
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: Deploy with Kamal
-        run: kamal deploy
+        run: |
+          export KAMAL_REGISTRY_PASSWORD="${{ secrets.DOCKER_PASSWORD }}"
+          kamal deploy
