@@ -136,3 +136,11 @@ jobs:
         run: |
           export KAMAL_REGISTRY_PASSWORD="${{ secrets.DOCKER_PASSWORD }}"
           kamal deploy
+
+      - name: Run Database Migrations
+        run: |
+          kamal app exec -- bin/rails db:migrate
+
+      - name: Seed Database
+        run: |
+          kamal app exec -- bin/rails db:seed
