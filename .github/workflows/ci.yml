@@ -141,6 +141,6 @@ jobs:
         run: |
           kamal app exec -- bin/rails db:migrate
 
-      - name: Seed Database
-        run: |
-          kamal app exec -- bin/rails db:seed
+#      - name: Seed Database
+#        run: |
+#          kamal app exec -- bin/rails db:seed
