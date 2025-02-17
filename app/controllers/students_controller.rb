@@ -4,17 +4,11 @@ class StudentsController < ApplicationController
   attr_reader :student # helps with testing
   attr_reader :students
   include Pagy::Backend
-  # GET /students or /students.json
-  # def index
-  #   @pagy, @students = pagy(Student.active)
-  #   @grades = Student.active.pluck(:grade).uniq.sort
-  # end
   def index
     @grades = Student.distinct.pluck(:grade).compact.sort
 
     students_scope = Student.active
     students_scope = students_scope.where(grade: params[:grade]) if params[:grade].present?
-
     @pagy, @students = pagy(students_scope)
   end
 
