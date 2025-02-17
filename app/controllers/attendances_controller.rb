@@ -12,7 +12,7 @@ class AttendancesController < ApplicationController
 
   # GET /attendances/new
   def new
-    @q = Student.ransack(params[:q])
+    @q = Student.active.ransack(params[:q])
     @students = @q.result(distinct: true)
     @attendances = Attendance.order(timestamp: :desc).limit(10)
     respond_to do |format|

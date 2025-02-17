@@ -23,7 +23,9 @@
       <th>UID</th>
       <th>Status</th>
       <th>Grade</th>
-      <th>Section</th>
+      <th>Classroom</th>
+      <th>Student Email</th>
+      <th>Parent Email</th>
       <th>Actions</th>
     </tr>
     </thead>
@@ -43,8 +45,9 @@
           <% end %>
         </td>
         <td><%= student.grade %></td> <!-- Display grade -->
-        <td><%= student.section %></td> <!-- Display section -->
-
+        <td><%= student.classroom_id %></td>
+        <td><%= student.student_email_address %></td>
+        <td><%= student.parent_email_address %></td>
 
         <td>
           <div class="flex space-x-2">

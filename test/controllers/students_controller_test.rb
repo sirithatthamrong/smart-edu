@@ -2,7 +2,7 @@ require "test_helper"
 
 class StudentsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @student = students(:student_1)
+    @student = Student.first
     sign_in
   end
 
@@ -18,7 +18,7 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create student" do
     assert_difference("Student.count", 1) do
-      post students_url, params: { student: { name: "newstudent", section: "A", grade: "10" } }
+      post students_url, params: { student: { name: "newstudent", is_active: 1, grade: 5, classroom_id: "5A", student_email_address: "student3@example.com", parent_email_address: @student.parent_email_address } }
     end
     assert_redirected_to student_url(Student.last)
   end
@@ -35,7 +35,8 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update student" do
-    patch student_url(@student), params: { student: { name: "newname", is_active: 1, section: "B", grade: "10" } }
+    # print all the student attributes
+    patch student_url(@student), params: { student: { name: "newname", is_active: 1, grade: @student.grade, classroom_id: @student.classroom_id, student_email_address: @student.student_email_address, parent_email_address: @student.parent_email_address } }
     assert_redirected_to student_url(@student)
   end
 
@@ -43,9 +44,8 @@ class StudentsControllerTest < ActionDispatch::IntegrationTest
   test "archive student after deletion" do
     delete student_url(@student)
     @student.reload
-
     # Assert that the student is archived (is_active should be true)
-    assert_equal true, @student.is_active, "Student was not archived"
+    assert_equal false, @student.is_active?, "Student was not archived"
 
     # Assert the correct redirect after the action
     assert_redirected_to students_path

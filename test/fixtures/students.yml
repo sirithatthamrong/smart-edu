@@ -8,20 +8,23 @@
 #
 # Table name: students
 #
-#  id           :integer          not null, primary key
-#  discarded_at :datetime
-#  grade        :string
-#  is_active    :boolean          default(TRUE), not null
-#  name         :string
-#  section      :string
-#  uid          :string           not null
+#  id                    :integer          not null, primary key
+#  discarded_at          :datetime
+#  grade                 :integer
+#  is_active             :boolean          default(TRUE), not null
+#  name                  :string
+#  parent_email_address  :string           default("parent@example.com"), not null
+#  student_email_address :string           default("student@example.com"), not null
+#  uid                   :string           not null
+#  classroom_id          :integer          default(0), not null
 #
 # Indexes
 #
+#  index_students_on_classroom_id  (classroom_id)
 #  index_students_on_discarded_at  (discarded_at)
 #
-<% for i in 1..100 do %>
-student_<%=i%>:
-  name: Student <%=i%>
-  uid: UID_<%=i%>
-<% end %>
+# Foreign Keys
+#
+#  classroom_id           (classroom_id => classrooms.id)
+#  student_email_address  (student_email_address => users.email_address)
+#

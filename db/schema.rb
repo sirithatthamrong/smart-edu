@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_16_114636) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_17_050338) do
   create_table "attendances", force: :cascade do |t|
     t.integer "student_id", null: false
     t.datetime "timestamp"
@@ -76,8 +76,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_16_114636) do
     t.string "uid", null: false
     t.datetime "discarded_at"
     t.boolean "is_active", default: true, null: false
-    t.string "section"
-    t.string "grade"
+    t.integer "grade"
+    t.string "student_email_address", default: "student@example.com", null: false
+    t.string "parent_email_address", default: "parent@example.com", null: false
+    t.integer "classroom_id", default: 0, null: false
+    t.index ["classroom_id"], name: "index_students_on_classroom_id"
     t.index ["discarded_at"], name: "index_students_on_discarded_at"
   end
 
@@ -98,7 +101,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_16_114636) do
     t.datetime "updated_at", null: false
     t.string "role", default: "student"
     t.boolean "approved", default: false
+    t.integer "school_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["school_id"], name: "index_users_on_school_id"
   end
 
   add_foreign_key "attendances", "students"
@@ -109,6 +114,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_16_114636) do
   add_foreign_key "principal_teacher_relationships", "users", column: "teacher_id"
   add_foreign_key "school_tiers", "schools"
   add_foreign_key "sessions", "users"
+  add_foreign_key "students", "classrooms"
+  add_foreign_key "students", "users", column: "student_email_address", primary_key: "email_address"
   add_foreign_key "teacher_student_relationships", "users", column: "student_id"
   add_foreign_key "teacher_student_relationships", "users", column: "teacher_id"
+  add_foreign_key "users", "schools"
 end

@@ -6,7 +6,7 @@ class StudentsController < ApplicationController
   include Pagy::Backend
   # GET /students or /students.json
   def index
-    @pagy, @students = pagy(Student.where(is_active: true))
+    @pagy, @students = pagy(Student.active)
   end
 
   # GET /students/1 or /students/1.json
@@ -31,7 +31,14 @@ class StudentsController < ApplicationController
   def edit; end
   # POST /students or /students.json
   def create
-    @student = Student.new(student_params)
+    classroom = Classroom.find_by(class_id: params[:student][:classroom_id])
+
+    if classroom.nil?
+      flash[:error] = "Classroom not found"
+      render :new, status: :unprocessable_entity and return
+    end
+
+    @student = Student.new(student_params.merge(classroom_id: classroom.id))
 
     respond_to do |format|
       if @student.save
@@ -59,13 +66,6 @@ class StudentsController < ApplicationController
 
   # DELETE /students/1 or /students/1.json
   def destroy
-    # @student.discard!
-    #
-    # respond_to do |format|
-    #   format.html { redirect_to students_path, status: :see_other, notice: "#{@student.name} was successfully removed." }
-    #   format.json { head :no_content }
-    # end
-
     @student.update(is_active: false) # Archive the student instead of deleting
 
     respond_to do |format|
@@ -78,13 +78,12 @@ class StudentsController < ApplicationController
 
     # Use callbacks to share common setup or constraints between actions.
     def set_student
-      # @student = Student.find(params.expect(:id))
       @student = Student.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def student_params
-      params.require(:student).permit(:name, :is_active, :section, :grade)
+      params.require(:student).permit(:name, :is_active, :grade, :classroom_id, :student_email_address, :parent_email_address)
     end
 
     def archive
