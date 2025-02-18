@@ -17,4 +17,5 @@
 class Classroom < ApplicationRecord
   validates :class_id, presence: true
   validates :grade_level, presence: true
+  has_many :students
 end

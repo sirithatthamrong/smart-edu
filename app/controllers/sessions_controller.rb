@@ -11,6 +11,7 @@ class SessionsController < ApplicationController
     if user&.authenticate(params[:password])
       if user.approved?
         start_new_session_for(user)
+
         redirect_to after_authentication_url
       else
         flash[:alert] = "Your account is pending approval."

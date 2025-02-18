@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_17_050338) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_18_015653) do
   create_table "attendances", force: :cascade do |t|
     t.integer "student_id", null: false
     t.datetime "timestamp"
