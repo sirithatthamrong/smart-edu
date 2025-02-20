@@ -25,6 +25,11 @@
             <i class="fas fa-user-shield"></i> Manage Users
           <% end %></li>
       <% end %>
+      <% if current_user.admin? %>
+      <li><%= link_to "/students/scan" do %>
+          <i class="fas fa-qrcode"></i> Scan QR Code
+        <% end %></li>
+       <% end %>
 
       <li><%= link_to session_path, data: { turbo_method: :delete } do %>
           <i class="fas fa-sign-out-alt"></i> Logout
