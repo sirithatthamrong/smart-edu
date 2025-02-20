@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+get "/students/scan", to: "admin#scan_qr"
   resources :attendances
    resources :students do
     collection do
@@ -19,7 +20,6 @@ Rails.application.routes.draw do
 
   get "/admin/scan_qr", to: "admin#scan_qr"
   post "/admin/checkin", to: "admin#checkin"
-  get "/students/scan", to: "admin#scan_qr"
   get "up" => "rails/health#show", as: :rails_health_check
   root "home#index"
 end
