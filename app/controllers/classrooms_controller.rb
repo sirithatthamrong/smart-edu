@@ -1,12 +1,20 @@
 class ClassroomsController < ApplicationController
   before_action :set_classroom, only: [ :show, :grading ]
 
-  # Show action for displaying classroom details and students
-  def show
-    # Find the classroom by its ID
-    @classroom = Classroom.find(params[:id])
+  def index
+    @classrooms = Classroom.all.order(:class_id)
 
-    # Ensure that only students in this classroom and of the correct grade level are displayed
+    # make sure that the student + admin can access the grade from the nav_bar
+    @classroom = Classroom.first
+  end
+
+  def show
+    # If the user is an admin, they can see any classroom
+    if current_user&.admin?
+      @classroom = Classroom.first
+    end
+    # for students
+    @classroom = Classroom.find(params[:id])
     @students = @classroom.students.where(grade: @classroom.grade_level).order(:name)
   end
 
@@ -15,6 +23,7 @@ class ClassroomsController < ApplicationController
   def grading
     @classroom = Classroom.find(params[:id])
     @grades = Student.distinct.where.not(grade: nil).pluck(:grade).compact.sort
+
     @students_by_grade = @grades.map do |grade|
       {
         grade: grade,
@@ -45,7 +54,7 @@ class ClassroomsController < ApplicationController
 
   # This method is called before both show and grading actions to find the classroom
   def set_classroom
-    @classroom = Classroom.first
+    @classroom = Classroom.find(params[:id])
   end
   def grade_level
     @classroom = Classroom.find(params[:id])
