@@ -1,6 +1,6 @@
 module QrHelper
-  require 'rqrcode'
-  require 'digest'
+  require "rqrcode"
+  require "digest"
 
   SECRET_KEY = Rails.application.credentials.secret_key_base
 
@@ -11,8 +11,8 @@ module QrHelper
     qr = RQRCode::QRCode.new(qr_data)
     qr.as_svg(
       offset: 0,
-      color: '000',
-      shape_rendering: 'crispEdges',
+      color: "000",
+      shape_rendering: "crispEdges",
       module_size: 6,
       standalone: true
     ).html_safe

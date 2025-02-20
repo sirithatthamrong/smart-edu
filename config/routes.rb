@@ -3,7 +3,7 @@ get "/students/scan", to: "admin#scan_qr"
   resources :attendances
    resources :students do
     collection do
-      post 'mark_attendance'
+      post "mark_attendance"
     end
   end
   get "home/index"

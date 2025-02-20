@@ -25,8 +25,8 @@ class AttendancesController < ApplicationController
 
   # GET /attendances/1/edit
   def edit
-      # This method is intentionally left empty because the edit functionality
-      # is handled by the view and does not require any additional logic.
+    # This method is intentionally left empty because the edit functionality
+    # is handled by the view and does not require any additional logic.
   end
 
   # POST /attendances or /attendances.json
