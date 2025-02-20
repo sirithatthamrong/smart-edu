@@ -3,7 +3,7 @@ class AttendancesController < ApplicationController
   include Pagy::Backend
   # GET /attendances or /attendances.json
   def index
-    @pagy, @attendances = pagy(Attendance.all)
+    @attendances = Attendance.all
   end
 
   # GET /attendances/1 or /attendances/1.json
@@ -14,9 +14,9 @@ class AttendancesController < ApplicationController
 
   # GET /attendances/new
   def new
-    @q = Student.ransack(params[:q])
+    @q = Student.active.ransack(params[:q])
     @students = @q.result(distinct: true)
-    @attendances = Attendance.order(timestamp: :desc).limit(20).includes(:student)
+    @attendances = Attendance.order(timestamp: :desc).limit(10)
     respond_to do |format|
       format.html # For normal page loads
       format.turbo_stream # For Turbo-powered live updates

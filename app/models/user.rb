@@ -7,13 +7,19 @@
 #  email_address   :string           not null
 #  is_active       :boolean          default(TRUE)
 #  password_digest :string           not null
-#  role            :string           default("teacher")
+#  role            :string           default("student")
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  school_id       :integer
 #
 # Indexes
 #
 #  index_users_on_email_address  (email_address) UNIQUE
+#  index_users_on_school_id      (school_id)
+#
+# Foreign Keys
+#
+#  school_id  (school_id => schools.id)
 #
 class User < ApplicationRecord
   has_secure_password
@@ -23,7 +29,7 @@ class User < ApplicationRecord
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, length: { minimum: 8, maximum: 20 }, if: :password_required?
 
-  ROLES = { admin: "admin", principal: "principal", teacher: "teacher" }.freeze
+  ROLES = { admin: "admin", principal: "principal", teacher: "teacher", student: "student" }.freeze
   validates :role, inclusion: { in: ROLES.values }
 
   scope :approved, -> { where(approved: true) }
@@ -48,6 +54,10 @@ class User < ApplicationRecord
 
   def teacher?
     role == "teacher"
+  end
+
+  def student?
+    role == "student"
   end
 
   private
