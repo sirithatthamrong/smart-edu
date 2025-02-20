@@ -14,7 +14,7 @@
   <!-- Small Clickable QR Code -->
   <figure class="p-5 flex justify-center">
     <%= link_to "#qr-modal", class: "cursor-pointer", data: { turbo_frame: "qr-modal" } do %>
-      <%= raw RQRCode::QRCode.new(student.uid).as_svg(module_size: 5, standalone: true, class: "w-32 h-32 border border-gray-500 rounded-lg shadow-md hover:shadow-lg transition") %>
+      <%= generate_qr_code(@student.uid) %>
     <% end %>
   </figure>
 </div>
