@@ -16,6 +16,7 @@
     <%= form.email_field :email_address, class: "input input-bordered w-full mt-2", placeholder: "Email", autocomplete: "username" %>
     <%= form.password_field :password, class: "input input-bordered w-full mt-2", placeholder: "Password", autocomplete: "new-password" %>
     <%= form.password_field :password_confirmation, class: "input input-bordered w-full mt-2", placeholder: "Confirm Password", autocomplete: "new-password" %>
+    <%= form.select :school_id, School.all.collect { |s| [s.name, s.id] }, { prompt: "Select School" }, class: "input input-bordered w-full mt-2" %>
     <div class="mt-4">
       <div class="flex items-center mt-2">
         <%= form.radio_button :role, "teacher", class: "radio radio-primary" %>
@@ -29,5 +30,7 @@
   <div class="text-center py-4">
     or
   </div>
-  <%= link_to "Back to Sign In", new_session_path, class:"link link-info mt-4" %>
+  <div>
+    <%= link_to "Sign in", new_session_path, method: :get, class: "btn btn-secondary btn-wide w-full" %>
+  </div>
 <% end %>

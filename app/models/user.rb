@@ -29,10 +29,11 @@ class User < ApplicationRecord
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, length: { minimum: 8, maximum: 20 }, if: :password_required?
 
-  ROLES = { admin: "admin", principal: "principal", teacher: "teacher", student: "student" }.freeze
+  ROLES = { admin: "admin", principal: "principal", teacher: "teacher", student: "student", system: "system" }.freeze
   validates :role, inclusion: { in: ROLES.values }
 
   scope :approved, -> { where(approved: true) }
+  scope :pending_in_school, ->(school_id) { where(approved: false, school_id: school_id) }
 
   before_create :auto_approve_principal
 
@@ -60,9 +61,19 @@ class User < ApplicationRecord
     role == "student"
   end
 
+  def system?
+    role == "system"
+  end
+
   private
 
   def password_required?
     new_record? || password.present?
+  end
+
+  def validate_student_email
+    unless Student.exists?(student_email_address: email_address)
+      errors.add(:email_address, "is not linked to any student in our records")
+    end
   end
 end
