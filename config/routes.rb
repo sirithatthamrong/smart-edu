@@ -17,6 +17,7 @@ get "/students/scan", to: "admin#scan_qr"
     end
   end
 
+get 'login', to: 'sessions#new', as: 'login'
 
   get "/admin/scan_qr", to: "admin#scan_qr"
   post "/admin/checkin", to: "admin#checkin"
