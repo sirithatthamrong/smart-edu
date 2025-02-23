@@ -1,7 +1,5 @@
 puts "Seeding data..."
 
-# TODO: Add models
-
 # Create Schools
 school1 = School.create!(name: "Piti Academy", address: "123 Main St, Bangkok")
 school2 = School.create!(name: "Kanat Kitty School", address: "456 Algorithm Rd, Nakhon Pathom")
@@ -11,23 +9,91 @@ classroom1 = Classroom.create!(class_id: "5A", grade_level: 5)
 classroom2 = Classroom.create!(class_id: "6B", grade_level: 6)
 classroom3 = Classroom.create!(class_id: "6A", grade_level: 6)
 
-# Create Users (Principals, Teachers, Students, Parents)
-principal1 = User.create!(email_address: "principal1@example.com", password: "password123", role: "principal", school_id: school1.id)
-principal2 = User.create!(email_address: "principal2@example.com", password: "password123", role: "principal", school_id: school2.id)
+# Create Users (Principals, Teachers, Students)
+principal1 = User.create!(
+  first_name: "Alice",
+  last_name: "Johnson",
+  personal_email: "alice.johnson@example.com",
+  email_address: "alice.j@principal.schoolname.edu",
+  password: "password123",
+  password_confirmation: "password123",
+  role: "principal",
+  school_id: school1.id,
+  approved: true
+)
 
-teacher1 = User.create!(email_address: "teacher1@example.com", password: "password123", role: "teacher", school_id: school1.id)
-teacher2 = User.create!(email_address: "teacher2@example.com", password: "password123", role: "teacher", school_id: school2.id)
-teacher3 = User.create!(email_address: "teacher3@example.com", password: "password123", role: "teacher", school_id: school2.id)
+principal2 = User.create!(
+  first_name: "Bob",
+  last_name: "Smith",
+  personal_email: "bob.smith@example.com",
+  email_address: "bob.s@principal.schoolname.edu",
+  password: "password123",
+  password_confirmation: "password123",
+  role: "principal",
+  school_id: school2.id,
+  approved: true
+)
 
-student1 = User.create!(email_address: "student1@example.com", password: "password123", role: "student", school_id: school1.id)
-student2 = User.create!(email_address: "student2@example.com", password: "password123", role: "student", school_id: school2.id)
-student3 = User.create!(email_address: "student3@example.com", password: "password123", role: "student", school_id: school1.id)
-student4 = User.create!(email_address: "student4@example.com", password: "password123", role: "student", school_id: school1.id)
+teacher1 = User.create!(
+  first_name: "John",
+  last_name: "Doe",
+  personal_email: "john.doe@example.com",
+  email_address: "john.d@teacher.schoolname.edu",
+  password: "password123",
+  password_confirmation: "password123",
+  role: "teacher",
+  school_id: school1.id,
+  approved: false
+)
 
-# Assign Students to Classrooms
-student1 = Student.create!(name: "Tyla Nojokes", grade: 5, student_email_address: "student1@example.com", parent_email_address: "parent1@example.com", classroom_id: classroom1.id)
-student2 = Student.create!(name: "Mark Zuck", grade: 6, student_email_address: "student2@example.com", parent_email_address: "parent2@example.com", classroom_id: classroom2.id)
-student3 = Student.create!(name: "Harry Singh", grade: 6, student_email_address: "student3@example.com", parent_email_address: "parent2@example.com", classroom_id: classroom3.id)
+teacher2 = User.create!(
+  first_name: "Jane",
+  last_name: "Doe",
+  personal_email: "jane.doe@example.com",
+  email_address: "jane.d@teacher.schoolname.edu",
+  password: "password123",
+  password_confirmation: "password123",
+  role: "teacher",
+  school_id: school2.id,
+  approved: false
+)
+
+teacher3 = User.create!(
+  first_name: "Mike",
+  last_name: "Brown",
+  personal_email: "mike.brown@example.com",
+  email_address: "mike.b@teacher.schoolname.edu",
+  password: "password123",
+  password_confirmation: "password123",
+  role: "teacher",
+  school_id: school2.id,
+  approved: false
+)
+
+# Create Students (Separate Student Model)
+student1 = Student.create!(
+  name: "Tyla Nojokes",
+  grade: 5,
+  student_email_address: "student1@example.com",
+  parent_email_address: "parent1@example.com",
+  classroom_id: classroom1.id
+)
+
+student2 = Student.create!(
+  name: "Mark Zuck",
+  grade: 6,
+  student_email_address: "student2@example.com",
+  parent_email_address: "parent2@example.com",
+  classroom_id: classroom2.id
+)
+
+student3 = Student.create!(
+  name: "Harry Singh",
+  grade: 6,
+  student_email_address: "student3@example.com",
+  parent_email_address: "parent2@example.com",
+  classroom_id: classroom3.id
+)
 
 # Create Homerooms
 Homeroom.create!(teacher_id: teacher1.id, classroom_id: classroom1.id)
