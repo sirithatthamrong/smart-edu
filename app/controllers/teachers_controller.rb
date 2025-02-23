@@ -2,7 +2,7 @@ class TeachersController < ApplicationController
   before_action :authenticate_admin_or_principal!
 
   def index
-    @teachers = User.where(role: "teacher", school_id: current_user.school_id)
+    @teachers = User.where(role: "teacher", school_id: current_user.school_id, approved: true)
   end
 
   def destroy
