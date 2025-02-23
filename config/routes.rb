@@ -50,4 +50,6 @@ Rails.application.routes.draw do
   end
   get "classrooms/:id/grades/:grade", to: "classrooms#grading", as: :grading_by_grade
   get "grades/:grade", to: "classrooms#by_grade", as: :grade
+
+  resources :teachers, only: [:index, :destroy]
 end
