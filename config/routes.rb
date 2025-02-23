@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     end
   end
 
-get 'login', to: 'sessions#new', as: 'login'
+get "login", to: "sessions#new", as: "login"
 
   get "/admin/scan_qr", to: "admin#scan_qr"
   post "/admin/checkin", to: "admin#checkin"
