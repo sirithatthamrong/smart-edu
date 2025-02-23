@@ -9,16 +9,17 @@ class SignupController < ApplicationController
     ActiveRecord::Base.transaction do
       @user = User.new(user_params)
 
-    if @user.save
-      if @user.approved?
-        start_new_session_for @user
-        redirect_to after_authentication_url
+      if @user.save
+        if @user.approved?
+          start_new_session_for @user
+          redirect_to after_authentication_url
+        else
+          flash[:notice] = "Your account is pending approval. Please wait for admin approval."
+          redirect_to root_path
+        end
       else
-        flash[:notice] = "Your account is pending approval. Please wait for admin approval."
-        redirect_to root_path
+        render :new, status: :unprocessable_entity
       end
-    else
-      render :new, status: :unprocessable_entity
     end
   rescue ActiveRecord::RecordInvalid => e
     flash[:alert] = "Error: #{e.message}"
@@ -28,7 +29,7 @@ class SignupController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :personal_email, :password, :password_confirmation, :role)
+    permitted = params.require(:user).permit(:first_name, :last_name, :personal_email, :password, :password_confirmation, :role)
     permitted[:role] = params[:user].fetch(:role, "student") if %w[student teacher].include?(params[:user][:role].to_s)
     permitted
   end
