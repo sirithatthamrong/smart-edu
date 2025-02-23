@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
+  get "teachers/index"
+  get "teachers/destroy"
   resources :classrooms, only: [ :index, :show ]
 
   resources :classrooms do
     collection do
       get "by_grade/:grade", to: "classrooms#by_grade", as: "by_grade"
-      end
+    end
     member do
       get :grading
       get :grade_level
@@ -13,9 +15,9 @@ Rails.application.routes.draw do
   end
   resources :attendances
 
-get "/students/scan", to: "admin#scan_qr"
+  get "/students/scan", to: "admin#scan_qr"
   resources :attendances
-   resources :students do
+  resources :students do
     collection do
       post "mark_attendance"
     end
@@ -32,7 +34,6 @@ get "/students/scan", to: "admin#scan_qr"
     end
   end
 
-
   get "/admin/scan_qr", to: "admin#scan_qr"
   post "/admin/checkin", to: "admin#checkin"
   get "up" => "rails/health#show", as: :rails_health_check
@@ -44,9 +45,11 @@ get "/students/scan", to: "admin#scan_qr"
       patch :activate
     end
     collection do
-      get :manage  # This will map to students#manage
+      get :manage # This will map to students#manage
     end
   end
   get "classrooms/:id/grades/:grade", to: "classrooms#grading", as: :grading_by_grade
   get "grades/:grade", to: "classrooms#by_grade", as: :grade
+
+  resources :teachers, only: [ :index, :destroy ]
 end
