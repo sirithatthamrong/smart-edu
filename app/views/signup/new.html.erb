@@ -13,7 +13,7 @@
     </div>
   <% end %>
 
-<%= form_with(model: @user, url: signup_index_path, class: "form-control mt-4", local: true, html: { autocomplete: "on" }) do |form| %>
+  <%= form_with(model: @user, url: signup_index_path, class: "form-control mt-4", local: true, html: { autocomplete: "on" }) do |form| %>
     <%= form.text_field :first_name, class: "input input-bordered w-full mt-2", placeholder: "First Name", required: true %>
     <%= form.text_field :last_name, class: "input input-bordered w-full mt-2", placeholder: "Last Name", required: true %>
 
@@ -23,8 +23,12 @@
     <%= form.password_field :password_confirmation, class: "input input-bordered w-full mt-2", placeholder: "Confirm Password", required: true, autocomplete: "new-password" %>
 
     <div class="mt-4">
-      <%= form.label :role, "Select Role" %>
-      <%= form.select :role, User::ROLES.values - ["student"], { prompt: "Choose a role" }, class: "select select-bordered w-full mt-2", required: true %>
+      <div class="flex items-center mt-2">
+        <%= form.radio_button :role, "teacher", class: "radio radio-primary" %>
+        <div class="ml-2 px-2">Teacher</div>
+        <%= form.radio_button :role, "student", class: "radio radio-primary" %>
+        <div class="ml-2 px-2">Student</div>
+      </div>
     </div>
 
     <%= form.submit "Sign Up", class: "btn btn-primary w-full mt-4" %>

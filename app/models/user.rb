@@ -1,3 +1,29 @@
+# == Schema Information
+#
+# Table name: users
+#
+#  id              :integer          not null, primary key
+#  approved        :boolean          default(FALSE)
+#  email_address   :string           not null
+#  first_name      :string
+#  is_active       :boolean          default(TRUE)
+#  last_name       :string
+#  password_digest :string           not null
+#  personal_email  :string           not null
+#  role            :string           default("student")
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  school_id       :integer
+#
+# Indexes
+#
+#  index_users_on_email_address  (email_address) UNIQUE
+#  index_users_on_school_id      (school_id)
+#
+# Foreign Keys
+#
+#  school_id  (school_id => schools.id)
+#
 class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
