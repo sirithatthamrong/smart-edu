@@ -27,6 +27,9 @@
 class User < ApplicationRecord
   has_secure_password
   has_many :sessions, dependent: :destroy
+  has_many :principal_teacher_relationships, foreign_key: "teacher_id", dependent: :destroy
+  has_many :teacher_student_relationships, foreign_key: "teacher_id", dependent: :destroy
+  has_many :homerooms, foreign_key: "teacher_id", dependent: :destroy
 
 ROLES = { admin: "admin", principal: "principal", teacher: "teacher", student: "student" }.freeze
 
@@ -38,9 +41,12 @@ before_validation :generate_school_email, on: :create
   validates :email_address, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :personal_email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, presence: true, length: { minimum: 8, maximum: 20 }, if: :password_required?
+
+  ROLES = { admin: "admin", principal: "principal", teacher: "teacher", student: "student", system: "system" }.freeze
   validates :role, inclusion: { in: ROLES.values }
 
   scope :approved, -> { where(approved: true) }
+  scope :pending_in_school, ->(school_id) { where(approved: false, school_id: school_id) }
 
   before_create :auto_approve_principal
 
@@ -68,6 +74,10 @@ end
     role == "student"
   end
 
+  def system?
+    role == "system"
+  end
+
   private
 
   def generate_school_email
@@ -82,5 +92,11 @@ end
 
   def password_required?
     new_record? || password.present?
+  end
+
+  def validate_student_email
+    unless Student.exists?(student_email_address: email_address)
+      errors.add(:email_address, "is not linked to any student in our records")
+    end
   end
 end

@@ -1,11 +1,28 @@
 Rails.application.routes.draw do
-get "/students/scan", to: "admin#scan_qr"
+  get "teachers/index"
+  get "teachers/destroy"
+  resources :classrooms, only: [ :index, :show ]
+
+  resources :classrooms do
+    collection do
+      get "by_grade/:grade", to: "classrooms#by_grade", as: "by_grade"
+    end
+    member do
+      get :grading
+      get :grade_level
+    end
+    resources :students, only: [ :index, :show ]
+  end
   resources :attendances
-   resources :students do
+
+  get "/students/scan", to: "admin#scan_qr"
+  resources :attendances
+  resources :students do
     collection do
       post "mark_attendance"
     end
   end
+
   get "home/index"
   resource :session
   resources :passwords, param: :token
@@ -33,4 +50,8 @@ get 'login', to: 'sessions#new', as: 'login'
       get :manage  # This will map to students#manage
     end
   end
+  get "classrooms/:id/grades/:grade", to: "classrooms#grading", as: :grading_by_grade
+  get "grades/:grade", to: "classrooms#by_grade", as: :grade
+
+  resources :teachers, only: [ :index, :destroy ]
 end
