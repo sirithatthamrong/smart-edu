@@ -59,7 +59,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.save
   end
 
-    test "first_name and last_name should not be null" do
+  test "first_name and last_name should not be null" do
     user = User.new(first_name: nil, last_name: nil)
     assert_not user.valid?, "User is valid without a first_name and last_name"
     assert_not_nil user.errors[:first_name], "No validation error for first_name present"
