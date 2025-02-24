@@ -5,9 +5,9 @@
 #  id              :integer          not null, primary key
 #  approved        :boolean          default(FALSE)
 #  email_address   :string           not null
-#  first_name      :string
+#  first_name      :string           not null
 #  is_active       :boolean          default(TRUE)
-#  last_name       :string
+#  last_name       :string           not null
 #  password_digest :string           not null
 #  personal_email  :string           not null
 #  role            :string           default("student")
@@ -30,8 +30,6 @@ class User < ApplicationRecord
   has_many :principal_teacher_relationships, foreign_key: "teacher_id", dependent: :destroy
   has_many :teacher_student_relationships, foreign_key: "teacher_id", dependent: :destroy
   has_many :homerooms, foreign_key: "teacher_id", dependent: :destroy
-
-ROLES = { admin: "admin", principal: "principal", teacher: "teacher", student: "student" }.freeze
 
 before_validation :generate_school_email, on: :create
 
@@ -80,17 +78,26 @@ end
 
   private
 
-  def generate_school_email
-      return if email_address.present?
+def generate_school_email
+  return if email_address.present?
+  return if first_name.blank? || last_name.blank?
 
-      return if first_name.blank? || last_name.blank?
+  first_name_part = first_name.strip.downcase.gsub(/\s+/, "")
+  last_name_part = last_name.strip.downcase.gsub(/\s+/, "")[0..2] # First 3 letters of last name
+  school_domain = "#{role.downcase}.schoolname.edu"
 
-      first_name_part = first_name.strip.downcase.gsub(/\s+/, "")
-      last_name_part = last_name.strip.downcase.gsub(/\s+/, "")[0..2] # First 3 letters of last name
-      school_domain = "#{role.downcase}.schoolname.edu"
+  base_email = "#{first_name_part}.#{last_name_part}@#{school_domain}"
+  unique_email = base_email
+  counter = 1
 
-      self.email_address = "#{first_name_part}.#{last_name_part}@#{school_domain}"
-   end
+  while User.exists?(email_address: unique_email)
+    unique_email = "#{first_name_part}.#{last_name_part}#{counter}@#{school_domain}"
+    counter += 1
+  end
+
+  self.email_address = unique_email
+end
+
 
   def password_required?
     new_record? || password.present?
