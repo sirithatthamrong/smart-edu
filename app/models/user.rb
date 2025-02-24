@@ -98,6 +98,7 @@ def generate_school_email
   self.email_address = unique_email
 end
 
+
   def password_required?
     new_record? || password.present?
   end
