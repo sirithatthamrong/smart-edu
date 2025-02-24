@@ -36,15 +36,15 @@
         <% end %></li>
        <% end %>
 
-<!--      <li>-->
-        <%# if current_user&.can_manage_teachers? || @classroom.present? %>
-          <%#= link_to grading_classroom_path(@classroom || Classroom.first), class: 'your-class' do %>
-<!--            <i class="fas fa-graduation-cap"></i> Grades-->
-          <%# end %>
-        <%# else %>
-<!--          <span>No Classroom Available</span>-->
-        <%# end %>
-<!--      </li>-->
+      <li>
+        <% if current_user&.can_manage_teachers? || @classroom.present? %>
+          <%= link_to grading_classroom_path(@classroom || Classroom.first), class: 'your-class' do %>
+            <i class="fas fa-graduation-cap"></i> Grades
+          <% end %>
+        <% else %>
+          <span>No Classroom Available</span>
+        <% end %>
+      </li>
 
       <li><%= link_to session_path, data: { turbo_method: :delete } do %>
           <i class="fas fa-sign-out-alt"></i> Logout
