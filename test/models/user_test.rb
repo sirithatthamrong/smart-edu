@@ -28,7 +28,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   test "should save user" do
-    user = User.new email_address: "a3333@bbb.com", password: "password"
+    user = User.new email_address: "a3333@bbb.com", password: "password", personal_email: "a242@bbb.com", first_name: "a", last_name: "b"
     assert user.save
   end
 
@@ -53,9 +53,9 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should not save user with duplicated email" do
-    user = User.new email_address: "a222@bbb.com", password: "password"
+    user = User.new email_address: "a2232@bbb.com", password: "password", personal_email: "a2242@bbb.com", first_name: "a", last_name: "b"
     assert user.save
-    user = User.new email_address: "a222@bbb.com", password: "password"
+    user = User.new email_address: "a2232@bbb.com", password: "password", personal_email: "a2242@bbb.com", first_name: "a", last_name: "b"
     assert_not user.save
   end
 end

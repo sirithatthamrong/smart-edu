@@ -81,14 +81,16 @@ end
   private
 
   def generate_school_email
-    return if email_address.present?
+      return if email_address.present?
 
-    first_name_part = first_name.downcase.strip.gsub(/\s+/, "")
-    last_name_part = last_name.downcase.strip.gsub(/\s+/, "")[0..2] # First 3 letters of last name
-    school_domain = "#{role.downcase}.schoolname.edu"
+      return if first_name.blank? || last_name.blank?
 
-    self.email_address = "#{first_name_part}.#{last_name_part}@#{school_domain}"
-  end
+      first_name_part = first_name.strip.downcase.gsub(/\s+/, "")
+      last_name_part = last_name.strip.downcase.gsub(/\s+/, "")[0..2] # First 3 letters of last name
+      school_domain = "#{role.downcase}.schoolname.edu"
+
+      self.email_address = "#{first_name_part}.#{last_name_part}@#{school_domain}"
+   end
 
   def password_required?
     new_record? || password.present?
