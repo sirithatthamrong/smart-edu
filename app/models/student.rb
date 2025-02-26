@@ -47,7 +47,9 @@ class Student < ApplicationRecord
   def set_default_uid
     self.uid = SecureRandom.uuid if uid.blank?
   end
-    def self.ransackable_attributes
+
+  def self.ransackable_attributes(auth_object = nil)
+      auth_object
     ["classroom_id", "discarded_at", "grade", "id", "is_active", "name", "parent_email_address", "student_email_address", "uid"]
   end
 end
