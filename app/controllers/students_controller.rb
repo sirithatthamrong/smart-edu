@@ -23,8 +23,8 @@ class StudentsController < ApplicationController
   end
 
   def edit
-    # intentionally left blank
-    end
+    # This method is intentionally left empty because the edit functionality
+  end
 
   def create
     classroom = Classroom.find_by(id: raw_student_params[:classroom_id])
