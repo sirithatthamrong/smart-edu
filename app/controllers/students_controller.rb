@@ -26,42 +26,44 @@ class StudentsController < ApplicationController
       # intentionally left blank
    end
 
-  def create
-    classroom = Classroom.find_by(id: raw_student_params[:classroom_id])
-    if classroom.nil?
-      flash[:error] = "Classroom not found"
-      @student = Student.new(student_params)
-      render :new, status: :unprocessable_entity and return
-    end
-
-    ActiveRecord::Base.transaction do
-      user = User.create!(
-        first_name: user_params[:first_name],
-        last_name: user_params[:last_name],
-        personal_email: user_params[:student_email_address],
-        role: 'student',
-        password: SecureRandom.hex(8)
-      )
-
-      @student = Student.create!(
-        name: student_params[:name],
-        grade: student_params[:grade],
-        classroom_id: classroom.id,
-        student_email_address: user.email_address,
-        parent_email_address: student_params[:parent_email_address]
-      )
-
-      respond_to do |format|
-        format.html { redirect_to @student, notice: "Student was successfully created." }
-        format.json { render :show, status: :created, location: @student }
-      end
-    end
-
-  rescue ActiveRecord::RecordInvalid => e
-    flash[:error] = e.message
+ def create
+  classroom = Classroom.find_by(id: raw_student_params[:classroom_id])
+  if classroom.nil?
+    flash[:error] = "Classroom not found"
     @student = Student.new(student_params)
-    render :new, status: :unprocessable_entity
+    render :new, status: :unprocessable_entity and return
   end
+
+  ActiveRecord::Base.transaction do
+    user = User.create!(
+      first_name: user_params[:first_name],
+      last_name: user_params[:last_name],
+      personal_email: user_params[:student_email_address],
+      role: 'student',
+      password: SecureRandom.hex(8)
+    )
+
+    full_name = "#{user.first_name} #{user.last_name}"
+
+    @student = Student.create!(
+      name: full_name,
+      grade: student_params[:grade],
+      classroom_id: classroom.id,
+      student_email_address: user.email_address,
+      parent_email_address: student_params[:parent_email_address]
+    )
+
+    respond_to do |format|
+      format.html { redirect_to @student, notice: "Student was successfully created." }
+      format.json { render :show, status: :created, location: @student }
+    end
+  end
+
+rescue ActiveRecord::RecordInvalid => e
+  flash[:error] = e.message
+  @student = Student.new(student_params)
+  render :new, status: :unprocessable_entity
+end
 
   def update
     respond_to do |format|
@@ -94,13 +96,11 @@ class StudentsController < ApplicationController
     )
   end
 
-  # Extract parameters specific to Student.
   def student_params
-    raw_student_params.slice(:name, :is_active, :grade, :classroom_id, :student_email_address, :parent_email_address)
-  end
+  raw_student_params.slice(:is_active, :grade, :classroom_id, :student_email_address, :parent_email_address)
+end
 
-  # Extract parameters specific to User.
-  def user_params
-    raw_student_params.slice(:first_name, :last_name, :student_email_address)
-  end
+def user_params
+  raw_student_params.slice(:first_name, :last_name, :student_email_address)
+end
 end
