@@ -23,8 +23,8 @@ class StudentsController < ApplicationController
   end
 
   def edit
-      # intentionally left blank
-      end
+    # intentionally left blank
+    end
 
   def create
     classroom = Classroom.find_by(id: raw_student_params[:classroom_id])
@@ -39,7 +39,7 @@ class StudentsController < ApplicationController
         first_name: user_params[:first_name],
         last_name: user_params[:last_name],
         personal_email: user_params[:student_email_address],
-        role: 'student',
+        role: "student",
         password: SecureRandom.hex(8),
         school_id: current_user.school_id
       )
