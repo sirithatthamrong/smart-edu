@@ -1,65 +1,68 @@
 class StudentsController < ApplicationController
-  before_action :set_student, only: %i[ show edit update destroy ]
-  before_action :set_student, only: [ :show, :edit, :update, :destroy ]
-  attr_reader :student # helps with testing
-  attr_reader :students
+  before_action :set_student, only: %i[show edit update destroy]
   include Pagy::Backend
+
   def index
-    if params[:classroom_id].present?
-      @classroom = Classroom.find_by(id: params[:classroom_id])
-    end
-
+    @classroom = Classroom.find_by(id: params[:classroom_id]) if params[:classroom_id].present?
     @grades = Student.distinct.pluck(:grade).compact.sort
-
     students_scope = Student.active
     students_scope = students_scope.where(grade: params[:grade]) if params[:grade].present?
     @pagy, @students = pagy(students_scope)
   end
 
-
-  # GET /students/1 or /students/1.json
   def show
-    @student = Student.kept.find(params[:id]) # Fetch the student by ID from the database
+    @student = Student.kept.find(params[:id])
     respond_to do |format|
       format.html { render "show" }
-      format.js
       format.json { render json: @student }
     end
   end
 
-  # GET /students/new
   def new
     @student = Student.new
   end
 
-  # GET /students/1/edit
   def edit
-  end
+      # intentionally left blank
+   end
 
-  def edit; end
-  # POST /students or /students.json
   def create
-    classroom = Classroom.find_by(class_id: params[:student][:classroom_id])
-
+    classroom = Classroom.find_by(id: raw_student_params[:classroom_id])
     if classroom.nil?
       flash[:error] = "Classroom not found"
+      @student = Student.new(student_params)
       render :new, status: :unprocessable_entity and return
     end
 
-    @student = Student.new(student_params.merge(classroom_id: classroom.id))
+    ActiveRecord::Base.transaction do
+      user = User.create!(
+        first_name: user_params[:first_name],
+        last_name: user_params[:last_name],
+        personal_email: user_params[:student_email_address],
+        role: 'student',
+        password: SecureRandom.hex(8)
+      )
 
-    respond_to do |format|
-      if @student.save
+      @student = Student.create!(
+        name: student_params[:name],
+        grade: student_params[:grade],
+        classroom_id: classroom.id,
+        student_email_address: user.email_address,
+        parent_email_address: student_params[:parent_email_address]
+      )
+
+      respond_to do |format|
         format.html { redirect_to @student, notice: "Student was successfully created." }
         format.json { render :show, status: :created, location: @student }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @student.errors, status: :unprocessable_entity }
       end
     end
+
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:error] = e.message
+    @student = Student.new(student_params)
+    render :new, status: :unprocessable_entity
   end
 
-  # PATCH/PUT /students/1 or /students/1.json
   def update
     respond_to do |format|
       if @student.update(student_params)
@@ -72,47 +75,32 @@ class StudentsController < ApplicationController
     end
   end
 
-  # DELETE /students/1 or /students/1.json
   def destroy
-    @student.update(is_active: false) # Archive the student instead of deleting
-
     respond_to do |format|
-      format.html { redirect_to students_path, notice: "#{@student.name} was archived successfully." }
       format.json { head :no_content }
     end
   end
 
   private
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_student
-      @student = Student.find(params[:id])
-    end
-
-    # Only allow a list of trusted parameters through.
-    def student_params
-      params.require(:student).permit(:name, :is_active, :grade, :classroom_id, :student_email_address, :parent_email_address)
-    end
-
-    def archive
-      @student = Student.find(params[:id])
-      if @student.update(is_active: false)
-        redirect_to students_path, notice: "#{@student.name} has been archived."
-      else
-        redirect_to students_path, alert: "Failed to archive student."
-      end
-    end
-
-  def activate
+  def set_student
     @student = Student.find(params[:id])
-    if @student.update(is_active: true)
-      redirect_to students_path, notice: "#{@student.name} has been reactivated."
-    else
-      redirect_to students_path, alert: "Failed to activate student."
-    end
   end
 
-  def manage
-    @pagy, @students = pagy(Student.all) # Show both active and archived students
+  # Permit all expected keys in one go.
+  def raw_student_params
+    @raw_student_params ||= params.require(:student).permit(
+      :first_name, :last_name, :name, :is_active, :grade, :classroom_id, :student_email_address, :parent_email_address
+    )
+  end
+
+  # Extract parameters specific to Student.
+  def student_params
+    raw_student_params.slice(:name, :is_active, :grade, :classroom_id, :student_email_address, :parent_email_address)
+  end
+
+  # Extract parameters specific to User.
+  def user_params
+    raw_student_params.slice(:first_name, :last_name, :student_email_address)
   end
 end

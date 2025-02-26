@@ -1,4 +1,5 @@
-<%= form_with(model: student, class: 'form-control') do |form| %>
+<%= form_with(model: student, class: 'form-control', local: true) do |form| %>
+
   <% if student.errors.any? %>
     <div class="alert alert-error">
       <h2><%= pluralize(student.errors.count, "error") %> prohibited this student from being saved:</h2>
@@ -10,13 +11,23 @@
     </div>
   <% end %>
 
-  <div class="form-control">
-    <%= form.label :name, class: 'label' %>
-    <%= form.text_field :name, class: 'input input-bordered w-full' %>
+  <div class="mb-4">
+    <%= form.label :first_name, class: 'label' %>
+    <%= form.text_field :first_name, class: 'input input-bordered w-full', required: true %>
   </div>
 
   <div class="mb-4">
-    <%= form.label :grade, class:'label' %>
+    <%= form.label :last_name, class: 'label' %>
+    <%= form.text_field :last_name, class: 'input input-bordered w-full', required: true %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :name, class: 'label' %>
+    <%= form.text_field :name, class: 'input input-bordered w-full', required: true %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :grade, class: 'label' %>
     <%= form.text_field :grade, class: 'input input-bordered w-full', required: true %>
   </div>
 
