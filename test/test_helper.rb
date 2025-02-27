@@ -26,6 +26,17 @@ module ActiveSupport
     # Ensure test DB is seeded before running tests
     setup do
       Rails.application.load_seed unless User.exists?
+      ensure_school_exists
+    end
+
+    private
+
+    def ensure_school_exists
+      # Create a default test school if none exists
+      @test_school ||= School.first || School.create!(name: "Test School", address: "123 Test St")
+
+      # Ensure all test users are assigned a school
+      User.where(school_id: nil).update_all(school_id: @test_school.id)
     end
   end
 end
