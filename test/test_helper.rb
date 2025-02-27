@@ -9,8 +9,9 @@ end
 
 module SignInHelper
   def sign_in
+    @school = School.create!(name: "Test School", address: "123 Test St")
     user = User.find_by!(role: "principal")
-    post session_url, params: { email_address: user.email_address, password: "password123" }
+    post session_url, params: { email_address: user.email_address, password: "password123", school_id: @school.id }
   end
 end
 
@@ -25,8 +26,8 @@ module ActiveSupport
 
     # Ensure test DB is seeded before running tests
     setup do
-      Rails.application.load_seed unless User.exists?
       ensure_school_exists
+      Rails.application.load_seed unless User.exists?
     end
 
     private
@@ -35,8 +36,10 @@ module ActiveSupport
       # Create a default test school if none exists
       @test_school ||= School.first || School.create!(name: "Test School", address: "123 Test St")
 
-      # Ensure all test users are assigned a school
-      User.where(school_id: nil).update_all(school_id: @test_school.id)
+      # Ensure ALL test users (newly created or existing) have a school
+      User.where(school_id: nil).find_each do |user|
+        user.update!(school_id: @test_school.id)
+      end
     end
   end
 end
