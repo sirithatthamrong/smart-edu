@@ -26,3 +26,8 @@
 #
 #  school_id  (school_id => schools.id)
 #
+
+one:
+  email: "alice@example.com"
+  password_digest: <%= BCrypt::Password.create('password') %>  # Assuming you're using Devise for authentication
+  # Any other necessary fields

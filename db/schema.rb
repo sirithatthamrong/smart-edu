@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_24_074614) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_27_120517) do
   create_table "attendances", force: :cascade do |t|
     t.integer "student_id", null: false
     t.datetime "timestamp"
@@ -37,6 +37,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_074614) do
     t.datetime "updated_at", null: false
     t.index ["classroom_id"], name: "index_homerooms_on_classroom_id"
     t.index ["teacher_id"], name: "index_homerooms_on_teacher_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "amount", null: false
+    t.string "status", default: "pending", null: false
+    t.string "stripe_payment_intent_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
   create_table "principal_teacher_relationships", force: :cascade do |t|
@@ -114,6 +124,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_24_074614) do
   add_foreign_key "attendances", "users"
   add_foreign_key "homerooms", "classrooms"
   add_foreign_key "homerooms", "users", column: "teacher_id"
+  add_foreign_key "payments", "users"
   add_foreign_key "principal_teacher_relationships", "users", column: "principal_id"
   add_foreign_key "principal_teacher_relationships", "users", column: "teacher_id"
   add_foreign_key "school_tiers", "schools"

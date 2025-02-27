@@ -1,0 +1,70 @@
+<h1>Make a Payment</h1>
+
+<form id="payment-form">
+  <label for="first_name">First Name:</label>
+  <input type="text" id="first_name" name="first_name" required>
+
+  <label for="last_name">Last Name:</label>
+  <input type="text" id="last_name" name="last_name" required>
+
+  <label for="amount">Amount (in cents):</label>
+  <input type="number" id="amount" name="amount" min="1" required>
+
+  <label for="card-element">Credit or debit card</label>
+  <div id="card-element"></div>
+
+  <button type="submit">Pay Now</button>
+</form>
+
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const stripe = Stripe("<%= Rails.application.credentials.dig(:stripe, :publishable_key) %>");
+        const elements = stripe.elements();
+        const card = elements.create("card");
+        card.mount("#card-element");
+
+        document.getElementById("payment-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const firstName = document.getElementById("first_name").value;
+            const lastName = document.getElementById("last_name").value;
+            const amount = document.getElementById("amount").value;
+
+            if (!firstName || !lastName || !amount || amount <= 0) {
+                alert("Please fill in all fields and enter a valid amount.");
+                return;
+            }
+
+            const { paymentMethod, error } = await stripe.createPaymentMethod({
+                type: "card",
+                card: card,
+                billing_details: {
+                    name: firstName + " " + lastName,
+                }
+            });
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            fetch("/payments", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "X-CSRF-Token": "<%= form_authenticity_token %>" },
+                body: JSON.stringify({
+                    first_name: firstName,
+                    last_name: lastName,
+                    amount: parseInt(amount),
+                    payment_method_id: paymentMethod.id
+                }),
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = "/payments/success";
+                } else {
+                    alert("Payment failed!");
+                }
+            });
+        });
+    });
+</script>
