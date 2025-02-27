@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # get "login", to: "sessions#new", as: "login"
+  get "login", to: "sessions#new", as: "login"
   # post "sessions", to: "sessions#create"
   # delete "sessions", to: "sessions#destroy"
 
