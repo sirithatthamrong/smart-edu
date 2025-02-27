@@ -32,7 +32,8 @@
 
 </head>
 <body>
-<% if authenticated? %>
+
+<% if current_user&.approved? %>
   <%= render "layouts/nav" %>
   <%= render "layouts/drawer" do %>
     <%= yield %>
