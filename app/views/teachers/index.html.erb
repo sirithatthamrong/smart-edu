@@ -2,7 +2,6 @@
 <% content_for :title, "Manage Teachers" %>
 
 <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg">
-
   <% if @teachers.any? %>
     <table class="w-full border border-gray-300 shadow-lg rounded-lg text-gray-800">
       <thead>
@@ -16,11 +15,10 @@
         <tr id="teacher-<%= teacher.id %>" class="bg-white hover:bg-gray-50 transition duration-200 ease-in-out">
           <td class="py-4 px-6 border-b border-gray-300 text-center"><%= teacher.email_address %></td>
           <td class="py-4 px-6 text-center border-b border-gray-300">
-            <%= button_to "✖ Remove", teacher_path(teacher),
-                          method: :delete,
-                          remote: true,
-                          data: { turbo: true, confirm: "Are you sure you want to remove this teacher?" },
-                          class: "cancel-btn bg-red-500 py-2 px-4 rounded-md hover:bg-red-600 transition" %>
+            <button class="cancel-btn bg-red-500 py-2 px-4 rounded-md hover:bg-red-600 transition"
+                    onclick="confirmDelete(<%= teacher.id %>, '<%= teacher.email_address %>')">
+              ✖ Remove
+            </button>
           </td>
         </tr>
       <% end %>
@@ -30,3 +28,23 @@
     <p class="text-center text-gray-600 mt-6">No teachers available.</p>
   <% end %>
 </div>
+
+<!-- Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-1/3 text-center">
+    <h2 class="text-lg font-bold">Confirm Deletion</h2>
+    <p class="my-4">Are you sure you want to remove <span id="teacherEmail" class="font-bold"></span>?</p>
+    <div class="flex justify-center space-x-4">
+      <form id="deleteForm" method="post">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <input type="hidden" name="_method" value="delete">
+        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
+          Yes, Remove
+        </button>
+      </form>
+      <button onclick="closeModal()" class="bg-gray-300 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<%= javascript_include_tag "controllers/delete_teacher_controller" %>
