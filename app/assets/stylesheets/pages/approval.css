@@ -5,8 +5,7 @@
 @layer components {
     /* Full-page Background */
     .teacher-container {
-        /*@apply w-full min-h-screen bg-[#DBDFEA] flex flex-col items-center py-12;*/
-        @apply w-full min-h-screen bg-white flex flex-col items-center py-12;
+        @apply w-full min-h-screen bg-white flex flex-col items-center;
     }
 
     /* Title Styling */
@@ -16,11 +15,11 @@
 
     /* Table Styling */
     .teacher-table {
-        @apply w-[95%] border border-gray-300 rounded-xl shadow-xl p-4 overflow-hidden bg-white;
+        @apply w-[99%] border border-gray-300 rounded-xl shadow-xl p-4 overflow-hidden bg-white;
     }
 
     .teacher-table thead th {
-        @apply bg-[#8294C4] text-white text-left py-4 px-6 border-b;
+        @apply bg-[#5b79a3] text-white text-left py-4 px-6 border-b;
     }
 
     .teacher-table tbody tr {
