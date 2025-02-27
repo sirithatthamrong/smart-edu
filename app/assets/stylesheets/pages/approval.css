@@ -5,7 +5,8 @@
 @layer components {
     /* Full-page Background */
     .teacher-container {
-        @apply w-full min-h-screen bg-[#DBDFEA] flex flex-col items-center py-12;
+        /*@apply w-full min-h-screen bg-[#DBDFEA] flex flex-col items-center py-12;*/
+        @apply w-full min-h-screen bg-white flex flex-col items-center py-12;
     }
 
     /* Title Styling */
@@ -15,11 +16,11 @@
 
     /* Table Styling */
     .teacher-table {
-        @apply w-11/12 max-w-6xl border border-gray-300 rounded-xl shadow-xl p-4 overflow-hidden bg-white;
+        @apply w-[95%] border border-gray-300 rounded-xl shadow-xl p-4 overflow-hidden bg-white;
     }
 
     .teacher-table thead th {
-        @apply bg-[#8294C4] text-white text-left uppercase py-4 px-6 border-b;
+        @apply bg-[#8294C4] text-white text-left py-4 px-6 border-b;
     }
 
     .teacher-table tbody tr {
@@ -53,7 +54,7 @@
     }
 
     #deleteModal .modal-title {
-        @apply text-lg font-bold text-[#8294C4];
+        @apply text-lg font-bold text-[#1f2937];
     }
 
     #deleteModal .modal-buttons {
