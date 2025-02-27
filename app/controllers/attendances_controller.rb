@@ -34,8 +34,8 @@ class AttendancesController < ApplicationController
     student = Student.find(params[:student_id])
     CheckinService.checkin(student, Current.user)
     respond_to do |format|
-      format.html { redirect_to new_attendance_path(request.parameters) }
-      format.turbo_stream { redirect_to new_attendance_path(request.parameters) }
+      format.html { redirect_to new_attendance_path(request.parameters), notice: "Checked in successfully!" }
+      format.turbo_stream
     end
   end
 

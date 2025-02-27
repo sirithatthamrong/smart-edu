@@ -16,6 +16,9 @@ class StudentsController < ApplicationController
     @pagy, @students = pagy(students_scope)
   end
 
+  def history
+    @pagy, @students = pagy(Student.discarded)
+  end
 
   # GET /students/1 or /students/1.json
   def show
@@ -75,7 +78,7 @@ class StudentsController < ApplicationController
   # DELETE /students/1 or /students/1.json
   def destroy
     @student.update(is_active: false) # Archive the student instead of deleting
-
+    @student.update(discarded_at: Time.current)
     respond_to do |format|
       format.html { redirect_to students_path, notice: "#{@student.name} was archived successfully." }
       format.json { head :no_content }
@@ -115,4 +118,5 @@ class StudentsController < ApplicationController
   def manage
     @pagy, @students = pagy(Student.all) # Show both active and archived students
   end
+
 end

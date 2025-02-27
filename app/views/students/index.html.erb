@@ -109,7 +109,15 @@
             language: {
                 search: "",
                 searchPlaceholder: "Search students...",
+                entries: {
+                    _: 'students',
+                    1: 'student'
+                },
             },
+            columnDefs: [{
+                "defaultContent": "-",
+                "targets": "_all"
+            }],
         });
 
         // ------ Feature: Filter by Grade change auto ------

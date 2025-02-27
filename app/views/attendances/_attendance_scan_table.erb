@@ -4,6 +4,7 @@
     <table class="table table-zebra p-20">
       <thead>
         <tr>
+          <th>Student ID</th>
           <th>Student Name</th>
           <th>Action</th>
         </tr>
@@ -11,7 +12,8 @@
       <tbody>
         <% @students.each do |student| %>
           <tr class="hover" data-content="<%= student.name %>">
-            <td><%= highlight(student.name, params.dig(:q, :name_cont)) %></td>
+            <td class="text-gray-500"> <%= student.id %></td>
+            <td class="text-gray-500"><%= highlight(student.name, params.dig(:q, :name_cont)) %></td>
             <td><%= submit_tag "Check-in", name: "check_in",
               formaction: attendances_path(student_id: student.id),
               formmethod: :post,
