@@ -1,5 +1,6 @@
 @import "pages/students.css";
 @import "pages/approval.css";
+/*@import "pages";*/
 
 @tailwind base;
 @tailwind components;

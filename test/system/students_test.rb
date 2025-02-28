@@ -59,6 +59,9 @@ class StudentsTest < ApplicationSystemTestCase
     click_on "Delete", match: :first
     page.driver.browser.switch_to.alert.accept  # Accept the JavaScript confirmation
 
+    assert_text "#{@student.name} was archived successfully." # Wait for UI confirmation
+    sleep 1 # Wait for the database to update
+
     @student.reload
     assert_equal false, @student.is_active, "Student should be archived but is still active"
     assert_text "#{@student.name} was archived successfully."
