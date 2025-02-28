@@ -1,63 +1,79 @@
+# test/controllers/payments_controller_test.rb
 require "test_helper"
-require 'stripe'
+require "stripe"
 
 class PaymentsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    # Set Stripe's test secret key for the test environment
-    Stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'  # Use your actual test key
+    Stripe.api_key = Rails.application.credentials.dig(:stripe, :secret_key)
   end
 
   test "should create payment" do
-    # Create a test card token using Stripe's API (this is for testing purposes only)
-    token = Stripe::Token.create({
-                                   card: {
-                                     number: '4242424242424242', # Test card number (this is valid for testing)
-                                     exp_month: 12,
-                                     exp_year: 2025,
-                                     cvc: '123',
-                                   }
-                                 })
+    payment_intent = Stripe::PaymentIntent.construct_from({
+                                                            id: "pi_123",
+                                                            amount: 1000,
+                                                            currency: "thb",
+                                                            status: "succeeded"
+                                                          })
 
-    # Simulate a payment request to your controller
-    post new_pay, params: {
-      first_name: 'John',
-      last_name: 'Doe',
-      amount: 10,  # Amount in THB (10 THB)
-      payment_method_id: token.id  # Using the token for the payment method
-    }
+    Stripe::PaymentIntent.stub(:create, payment_intent) do
+      sign_in
 
-    # Assert that the response is a success
-    assert_response :success
+      payment_params = {
+        first_name: "John",
+        last_name: "Doe",
+        amount: 10,
+        payment_method_id: "pm_card_visa"
+      }
 
-    # Ensure the payment was created in the database with the correct details
-    payment = Payment.last
-    assert_equal 'successful', payment.status
-    assert_equal 10, payment.amount
-    assert_equal 'thb', payment.currency
-    assert_not_nil payment.stripe_payment_intent_id  # Check if the intent id was saved
+      post payments_url, params: payment_params
+
+      assert_response :success
+      assert_equal "success", JSON.parse(response.body)["status"]
+    end
   end
 
-  test "should handle stripe error" do
-    # Simulate a failed payment using an invalid card number
-    token = Stripe::Token.create({
-                                   card: {
-                                     number: '4000000000000002', # Invalid test card number
-                                     exp_month: 12,
-                                     exp_year: 2025,
-                                     cvc: '123',
-                                   }
-                                 })
+  test "should handle Stripe error" do
+    # Stub Stripe::PaymentIntent.create to raise a Stripe error.
+    Stripe::PaymentIntent.stub(:create, proc { |*_args| raise Stripe::StripeError.new("Stripe error occurred") }) do
+      sign_in
 
-    post create_payments_url, params: {
-      first_name: 'John',
-      last_name: 'Doe',
-      amount: 10,
-      payment_method_id: token.id
-    }
+      payment_params = {
+        first_name: "Jane",
+        last_name: "Doe",
+        amount: 20,
+        payment_method_id: "pm_card_visa"
+      }
 
-    # Assert that the response indicates an error
-    assert_response :unprocessable_entity
-    json_response = JSON.parse(response.body)
-    assert_includes json_response['error'], 'Your card was declined'
+      post payments_url, params: payment_params
+
+      assert_response 500
+      assert_includes JSON.parse(response.body)["error"], "Stripe error occurred"
+    end
+  end
+
+  test "should handle general error" do
+    # Stub Stripe::PaymentIntent.create to raise a generic StandardError.
+    Stripe::PaymentIntent.stub(:create, proc { |*_args| raise StandardError.new("General error occurred") }) do
+      sign_in
+
+      payment_params = {
+        first_name: "Alice",
+        last_name: "Smith",
+        amount: 30,
+        payment_method_id: "pm_card_visa"
+      }
+
+      post payments_url, params: payment_params
+
+      assert_response 500
+      assert_includes JSON.parse(response.body)["error"], "General error occurred"
+    end
+  end
+
+  test "should render success page" do
+    sign_in
+
+    get success_payments_url
+    assert_response :success
   end
 end

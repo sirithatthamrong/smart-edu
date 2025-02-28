@@ -20,14 +20,3 @@
 #
 #  user_id  (user_id => users.id)
 #
-one:
-  user: one
-  amount: 1
-  omise_charge_id: MyString
-  status: MyString
-
-two:
-  user: two
-  amount: 1
-  omise_charge_id: MyString
-  status: MyString
