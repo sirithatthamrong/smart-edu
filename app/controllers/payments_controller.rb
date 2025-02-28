@@ -19,13 +19,14 @@ class PaymentsController < ApplicationController
 
       payment = Payment.create(
         amount: amount,
-        status: "successful",
+        status: "succeeded",
         user_id: current_user.id,
         stripe_payment_intent_id: payment_intent.id
       )
 
 
       Rails.logger.info("Payment intent: #{payment_intent}")
+      Rails.logger.info("Payment: #{payment}")
 
       render json: { status: "success", payment: payment }, status: 200
 
